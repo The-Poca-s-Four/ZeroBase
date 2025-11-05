@@ -1,11 +1,10 @@
+// @ts-nocheck
 import React, { useState, useEffect } from 'react';
 
-import {SplashScreen,OnboardingScreen,LoginScreen,SignupScreen} from '@/components/auth';
-
-type ScreenType = 'splash' | 'onboarding' | 'login' | 'signup';
+import {SignupScreen, LoginScreen,OnboardingScreen,SplashScreen,WelcomeScreen} from '@/components/auth';
 
 export default function HomeScreen() {
-  const [currentScreen, setCurrentScreen] = useState<ScreenType>('splash');
+  const [currentScreen, setCurrentScreen] = useState('splash');
 
   // Splash screen timer
   useEffect(() => {
@@ -24,12 +23,9 @@ export default function HomeScreen() {
   }
 
   if (currentScreen === 'onboarding') {
-    return <OnboardingScreen onComplete={() => setCurrentScreen('login')} />;
+    return <OnboardingScreen onComplete={() => setCurrentScreen('Welcome')} />;
   }
-
-  if (currentScreen === 'login') {
-    return <LoginScreen onNavigateToSignup={() => setCurrentScreen('signup')} />;
+  if (currentScreen === 'Welcome') {
+    return <WelcomeScreen onComplete={() => setCurrentScreen('Welcome')} />;
   }
-
-  return <SignupScreen onNavigateToLogin={() => setCurrentScreen('login')} />;
 }
