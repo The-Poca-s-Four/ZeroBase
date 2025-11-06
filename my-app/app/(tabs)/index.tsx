@@ -1,31 +1,58 @@
 // @ts-nocheck
 import React, { useState, useEffect } from 'react';
-
-import {SignupScreen, LoginScreen,OnboardingScreen,SplashScreen,WelcomeScreen} from '@/components/auth';
+import {
+  SignupScreen,
+  LoginScreen,
+  OnboardingScreen,
+  SplashScreen,
+  WelcomeScreen,
+} from '@/components/auth';
 
 export default function HomeScreen() {
   const [currentScreen, setCurrentScreen] = useState('splash');
+  const [hasSeenOnboarding, setHasSeenOnboarding] = useState(false);
 
-  // Splash screen timer
+  // Kiểm tra xem đã từng xem Onboarding chưa
+  useEffect(() => {
+    const seen = localStorage.getItem('hasSeenOnboarding');
+    if (seen === 'true') {
+      setHasSeenOnboarding(true);
+    }
+  }, []);
+
+  // Splash timer
   useEffect(() => {
     if (currentScreen === 'splash') {
       const timer = setTimeout(() => {
-        setCurrentScreen('onboarding');
+        if (hasSeenOnboarding) {
+          setCurrentScreen('welcome');
+        } else {
+          setCurrentScreen('onboarding');
+        }
       }, 3000);
 
       return () => clearTimeout(timer);
     }
-  }, [currentScreen]);
+  }, [currentScreen, hasSeenOnboarding]);
 
   
+  const handleOnboardingComplete = () => {
+    localStorage.setItem('hasSeenOnboarding', 'true');
+    setHasSeenOnboarding(true);
+    setCurrentScreen('welcome');
+  };
+
   if (currentScreen === 'splash') {
     return <SplashScreen />;
   }
 
   if (currentScreen === 'onboarding') {
-    return <OnboardingScreen onComplete={() => setCurrentScreen('Welcome')} />;
+    return <OnboardingScreen onComplete={handleOnboardingComplete} />;
   }
-  if (currentScreen === 'Welcome') {
-    return <WelcomeScreen onComplete={() => setCurrentScreen('Welcome')} />;
+
+  if (currentScreen === 'welcome') {
+    return <WelcomeScreen />;
   }
+
+  return null;
 }
