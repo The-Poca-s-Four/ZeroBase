@@ -1,0 +1,1148 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HomeScreen matches snapshot 1`] = `
+<RCTScrollView
+  showsVerticalScrollIndicator={false}
+  style={
+    {
+      "backgroundColor": "#2B2B2B",
+      "flex": 1,
+    }
+  }
+>
+  <View>
+    <View
+      style={
+        {
+          "paddingBottom": 20,
+          "paddingHorizontal": 20,
+          "paddingTop": 60,
+        }
+      }
+    >
+      <Text
+        style={
+          {
+            "color": "#FFFFFF",
+            "fontSize": 32,
+            "fontWeight": "bold",
+          }
+        }
+      >
+        Hey, Poca
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": 20,
+          "elevation": 5,
+          "marginBottom": 20,
+          "marginHorizontal": 20,
+          "padding": 20,
+          "shadowColor": "#000",
+          "shadowOffset": {
+            "height": 4,
+            "width": 0,
+          },
+          "shadowOpacity": 0.1,
+          "shadowRadius": 8,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "marginBottom": 5,
+          }
+        }
+      >
+        <View>
+          <Text
+            style={
+              {
+                "color": "#000",
+                "fontSize": 24,
+                "fontWeight": "bold",
+              }
+            }
+          >
+            240.000
+          </Text>
+          <Text
+            style={
+              {
+                "color": "#666",
+                "fontSize": 12,
+                "marginTop": 4,
+              }
+            }
+          >
+            Today's Limit
+          </Text>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "flex-end",
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "color": "#000",
+                "fontSize": 24,
+                "fontWeight": "bold",
+              }
+            }
+          >
+            1.240.000
+          </Text>
+          <Text
+            style={
+              {
+                "color": "#666",
+                "fontSize": 12,
+                "marginTop": 4,
+              }
+            }
+          >
+            Unallocated balance
+          </Text>
+        </View>
+      </View>
+      <Text
+        style={
+          {
+            "color": "#999",
+            "fontSize": 14,
+            "marginTop": 2,
+          }
+        }
+      >
+        /400.000
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "gap": 10,
+          "marginBottom": 20,
+          "paddingHorizontal": 20,
+        }
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#FFEBEE",
+            "borderColor": "#E57373",
+            "borderRadius": 25,
+            "borderWidth": 2,
+            "opacity": 1,
+            "paddingHorizontal": 20,
+            "paddingVertical": 10,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#666",
+                "fontSize": 14,
+                "fontWeight": "600",
+              },
+              {
+                "color": "#333",
+              },
+            ]
+          }
+        >
+          − Outcome
+        </Text>
+      </View>
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "borderColor": "#E57373",
+            "borderRadius": 25,
+            "borderWidth": 2,
+            "opacity": 1,
+            "paddingHorizontal": 20,
+            "paddingVertical": 10,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#666",
+                "fontSize": 14,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          + Income
+        </Text>
+      </View>
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "borderColor": "#E57373",
+            "borderRadius": 25,
+            "borderWidth": 2,
+            "opacity": 1,
+            "paddingHorizontal": 20,
+            "paddingVertical": 10,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#666",
+                "fontSize": 14,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          % Allocate
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": 20,
+          "elevation": 3,
+          "marginBottom": 20,
+          "marginHorizontal": 20,
+          "padding": 20,
+          "shadowColor": "#000",
+          "shadowOffset": {
+            "height": 2,
+            "width": 0,
+          },
+          "shadowOpacity": 0.1,
+          "shadowRadius": 8,
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+            "marginBottom": 15,
+          }
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "#333",
+              "fontSize": 18,
+              "fontWeight": "bold",
+            }
+          }
+        >
+          4-day streak
+        </Text>
+        <Text
+          style={
+            {
+              "color": "#666",
+              "fontSize": 14,
+            }
+          }
+        >
+          ❄️ 4 available
+        </Text>
+      </View>
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "justifyContent": "space-between",
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "gap": 8,
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "color": "#999",
+                "fontSize": 12,
+                "fontWeight": "600",
+              }
+            }
+          >
+            S
+          </Text>
+          <Text
+            style={
+              {
+                "fontSize": 28,
+              }
+            }
+          >
+            ❄️
+          </Text>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "gap": 8,
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "color": "#999",
+                "fontSize": 12,
+                "fontWeight": "600",
+              }
+            }
+          >
+            M
+          </Text>
+          <Text
+            style={
+              {
+                "fontSize": 28,
+              }
+            }
+          >
+            🛡️
+          </Text>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "gap": 8,
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "color": "#999",
+                "fontSize": 12,
+                "fontWeight": "600",
+              }
+            }
+          >
+            T
+          </Text>
+          <Text
+            style={
+              {
+                "fontSize": 28,
+              }
+            }
+          >
+            🔥
+          </Text>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "gap": 8,
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "color": "#999",
+                "fontSize": 12,
+                "fontWeight": "600",
+              }
+            }
+          >
+            W
+          </Text>
+          <Text
+            style={
+              {
+                "fontSize": 28,
+              }
+            }
+          >
+            🔥
+          </Text>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "gap": 8,
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "color": "#999",
+                "fontSize": 12,
+                "fontWeight": "600",
+              }
+            }
+          >
+            T
+          </Text>
+          <Text
+            style={
+              {
+                "fontSize": 28,
+              }
+            }
+          >
+            🔥
+          </Text>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "gap": 8,
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "color": "#999",
+                "fontSize": 12,
+                "fontWeight": "600",
+              }
+            }
+          >
+            F
+          </Text>
+          <Text
+            style={
+              {
+                "fontSize": 28,
+              }
+            }
+          >
+            🔥
+          </Text>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "gap": 8,
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "color": "#999",
+                "fontSize": 12,
+                "fontWeight": "600",
+              }
+            }
+          >
+            S
+          </Text>
+          <Text
+            style={
+              {
+                "fontSize": 28,
+              }
+            }
+          >
+            ⚡
+          </Text>
+        </View>
+      </View>
+    </View>
+    <RCTScrollView
+      contentContainerStyle={
+        {
+          "gap": 15,
+          "paddingBottom": 30,
+          "paddingHorizontal": 20,
+        }
+      }
+      data={
+        [
+          {
+            "amount": 1000000,
+            "color": "#4A90E2",
+            "icon": "🚗",
+            "id": "1",
+            "name": "Transportation",
+            "total": 4000000,
+          },
+          {
+            "amount": 1000000,
+            "color": "#50C878",
+            "icon": "🍔",
+            "id": "2",
+            "name": "Food",
+            "total": 4000000,
+          },
+          {
+            "amount": 500000,
+            "color": "#FF6B6B",
+            "icon": "🎮",
+            "id": "3",
+            "name": "Entertainment",
+            "total": 2000000,
+          },
+          {
+            "amount": 800000,
+            "color": "#FFD93D",
+            "icon": "🛍️",
+            "id": "4",
+            "name": "Shopping",
+            "total": 3000000,
+          },
+        ]
+      }
+      decelerationRate="fast"
+      getItem={[Function]}
+      getItemCount={[Function]}
+      horizontal={true}
+      keyExtractor={[Function]}
+      onContentSizeChange={[Function]}
+      onLayout={[Function]}
+      onMomentumScrollBegin={[Function]}
+      onMomentumScrollEnd={[Function]}
+      onScroll={[Function]}
+      onScrollBeginDrag={[Function]}
+      onScrollEndDrag={[Function]}
+      removeClippedSubviews={false}
+      renderItem={[Function]}
+      scrollEventThrottle={0.0001}
+      showsHorizontalScrollIndicator={false}
+      snapToAlignment="start"
+      snapToInterval={352.5}
+      stickyHeaderIndices={[]}
+      viewabilityConfigCallbackPairs={[]}
+    >
+      <View>
+        <View
+          onFocusCapture={[Function]}
+          onLayout={[Function]}
+          style={
+            [
+              {
+                "flexDirection": "row",
+              },
+              null,
+            ]
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "backgroundColor": "#FFFFFF",
+                  "borderRadius": 20,
+                  "borderWidth": 3,
+                  "elevation": 3,
+                  "marginRight": 15,
+                  "padding": 15,
+                  "shadowColor": "#000",
+                  "shadowOffset": {
+                    "height": 2,
+                    "width": 0,
+                  },
+                  "shadowOpacity": 0.1,
+                  "shadowRadius": 8,
+                  "width": 337.5,
+                },
+                {
+                  "borderColor": "#4A90E2",
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "borderRadius": 30,
+                    "height": 60,
+                    "justifyContent": "center",
+                    "marginBottom": 12,
+                    "width": 60,
+                  },
+                  {
+                    "backgroundColor": "#4A90E2",
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  {
+                    "fontSize": 30,
+                  }
+                }
+              >
+                🚗
+              </Text>
+            </View>
+            <Text
+              style={
+                {
+                  "color": "#333",
+                  "fontSize": 16,
+                  "fontWeight": "bold",
+                  "marginBottom": 8,
+                }
+              }
+            >
+              Transportation
+            </Text>
+            <Text
+              style={
+                {
+                  "color": "#333",
+                  "fontSize": 12,
+                  "fontWeight": "600",
+                  "marginBottom": 8,
+                }
+              }
+            >
+              1,000,000
+               paid 
+              <Text
+                style={
+                  {
+                    "color": "#999",
+                    "fontWeight": "normal",
+                  }
+                }
+              >
+                of 
+                4,000,000
+              </Text>
+            </Text>
+            <View
+              style={
+                {
+                  "backgroundColor": "#F0F0F0",
+                  "borderRadius": 3,
+                  "height": 6,
+                  "overflow": "hidden",
+                }
+              }
+            >
+              <View
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": "100%",
+                    },
+                    {
+                      "backgroundColor": "#4A90E2",
+                      "width": "25%",
+                    },
+                  ]
+                }
+              />
+            </View>
+          </View>
+        </View>
+        <View
+          onFocusCapture={[Function]}
+          onLayout={[Function]}
+          style={
+            [
+              {
+                "flexDirection": "row",
+              },
+              null,
+            ]
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "backgroundColor": "#FFFFFF",
+                  "borderRadius": 20,
+                  "borderWidth": 3,
+                  "elevation": 3,
+                  "marginRight": 15,
+                  "padding": 15,
+                  "shadowColor": "#000",
+                  "shadowOffset": {
+                    "height": 2,
+                    "width": 0,
+                  },
+                  "shadowOpacity": 0.1,
+                  "shadowRadius": 8,
+                  "width": 337.5,
+                },
+                {
+                  "borderColor": "#50C878",
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "borderRadius": 30,
+                    "height": 60,
+                    "justifyContent": "center",
+                    "marginBottom": 12,
+                    "width": 60,
+                  },
+                  {
+                    "backgroundColor": "#50C878",
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  {
+                    "fontSize": 30,
+                  }
+                }
+              >
+                🍔
+              </Text>
+            </View>
+            <Text
+              style={
+                {
+                  "color": "#333",
+                  "fontSize": 16,
+                  "fontWeight": "bold",
+                  "marginBottom": 8,
+                }
+              }
+            >
+              Food
+            </Text>
+            <Text
+              style={
+                {
+                  "color": "#333",
+                  "fontSize": 12,
+                  "fontWeight": "600",
+                  "marginBottom": 8,
+                }
+              }
+            >
+              1,000,000
+               paid 
+              <Text
+                style={
+                  {
+                    "color": "#999",
+                    "fontWeight": "normal",
+                  }
+                }
+              >
+                of 
+                4,000,000
+              </Text>
+            </Text>
+            <View
+              style={
+                {
+                  "backgroundColor": "#F0F0F0",
+                  "borderRadius": 3,
+                  "height": 6,
+                  "overflow": "hidden",
+                }
+              }
+            >
+              <View
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": "100%",
+                    },
+                    {
+                      "backgroundColor": "#50C878",
+                      "width": "25%",
+                    },
+                  ]
+                }
+              />
+            </View>
+          </View>
+        </View>
+        <View
+          onFocusCapture={[Function]}
+          onLayout={[Function]}
+          style={
+            [
+              {
+                "flexDirection": "row",
+              },
+              null,
+            ]
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "backgroundColor": "#FFFFFF",
+                  "borderRadius": 20,
+                  "borderWidth": 3,
+                  "elevation": 3,
+                  "marginRight": 15,
+                  "padding": 15,
+                  "shadowColor": "#000",
+                  "shadowOffset": {
+                    "height": 2,
+                    "width": 0,
+                  },
+                  "shadowOpacity": 0.1,
+                  "shadowRadius": 8,
+                  "width": 337.5,
+                },
+                {
+                  "borderColor": "#FF6B6B",
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "borderRadius": 30,
+                    "height": 60,
+                    "justifyContent": "center",
+                    "marginBottom": 12,
+                    "width": 60,
+                  },
+                  {
+                    "backgroundColor": "#FF6B6B",
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  {
+                    "fontSize": 30,
+                  }
+                }
+              >
+                🎮
+              </Text>
+            </View>
+            <Text
+              style={
+                {
+                  "color": "#333",
+                  "fontSize": 16,
+                  "fontWeight": "bold",
+                  "marginBottom": 8,
+                }
+              }
+            >
+              Entertainment
+            </Text>
+            <Text
+              style={
+                {
+                  "color": "#333",
+                  "fontSize": 12,
+                  "fontWeight": "600",
+                  "marginBottom": 8,
+                }
+              }
+            >
+              500,000
+               paid 
+              <Text
+                style={
+                  {
+                    "color": "#999",
+                    "fontWeight": "normal",
+                  }
+                }
+              >
+                of 
+                2,000,000
+              </Text>
+            </Text>
+            <View
+              style={
+                {
+                  "backgroundColor": "#F0F0F0",
+                  "borderRadius": 3,
+                  "height": 6,
+                  "overflow": "hidden",
+                }
+              }
+            >
+              <View
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": "100%",
+                    },
+                    {
+                      "backgroundColor": "#FF6B6B",
+                      "width": "25%",
+                    },
+                  ]
+                }
+              />
+            </View>
+          </View>
+        </View>
+        <View
+          onFocusCapture={[Function]}
+          onLayout={[Function]}
+          style={
+            [
+              {
+                "flexDirection": "row",
+              },
+              null,
+            ]
+          }
+        >
+          <View
+            style={
+              [
+                {
+                  "backgroundColor": "#FFFFFF",
+                  "borderRadius": 20,
+                  "borderWidth": 3,
+                  "elevation": 3,
+                  "marginRight": 15,
+                  "padding": 15,
+                  "shadowColor": "#000",
+                  "shadowOffset": {
+                    "height": 2,
+                    "width": 0,
+                  },
+                  "shadowOpacity": 0.1,
+                  "shadowRadius": 8,
+                  "width": 337.5,
+                },
+                {
+                  "borderColor": "#FFD93D",
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                [
+                  {
+                    "alignItems": "center",
+                    "borderRadius": 30,
+                    "height": 60,
+                    "justifyContent": "center",
+                    "marginBottom": 12,
+                    "width": 60,
+                  },
+                  {
+                    "backgroundColor": "#FFD93D",
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  {
+                    "fontSize": 30,
+                  }
+                }
+              >
+                🛍️
+              </Text>
+            </View>
+            <Text
+              style={
+                {
+                  "color": "#333",
+                  "fontSize": 16,
+                  "fontWeight": "bold",
+                  "marginBottom": 8,
+                }
+              }
+            >
+              Shopping
+            </Text>
+            <Text
+              style={
+                {
+                  "color": "#333",
+                  "fontSize": 12,
+                  "fontWeight": "600",
+                  "marginBottom": 8,
+                }
+              }
+            >
+              800,000
+               paid 
+              <Text
+                style={
+                  {
+                    "color": "#999",
+                    "fontWeight": "normal",
+                  }
+                }
+              >
+                of 
+                3,000,000
+              </Text>
+            </Text>
+            <View
+              style={
+                {
+                  "backgroundColor": "#F0F0F0",
+                  "borderRadius": 3,
+                  "height": 6,
+                  "overflow": "hidden",
+                }
+              }
+            >
+              <View
+                style={
+                  [
+                    {
+                      "borderRadius": 3,
+                      "height": "100%",
+                    },
+                    {
+                      "backgroundColor": "#FFD93D",
+                      "width": "26.666666666666668%",
+                    },
+                  ]
+                }
+              />
+            </View>
+          </View>
+        </View>
+      </View>
+    </RCTScrollView>
+  </View>
+</RCTScrollView>
+`;

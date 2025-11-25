@@ -5,17 +5,24 @@ import {
   WelcomeScreen
 } from '@/components/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 
-export default function HomeScreen() {
+export default function MainScreen() {
   const [currentScreen, setCurrentScreen] = useState('splash');
   const [hasSeenOnboarding, setHasSeenOnboarding] = useState(false);
 
-  // Kiểm tra xem đã từng xem Onboarding chưa
   useEffect(() => {
     const checkOnboarding = async () => {
       try {
         const seen = await AsyncStorage.getItem('hasSeenOnboarding');
+        const loggedIn = await AsyncStorage.getItem('isLoggedIn');
+        
+        if (loggedIn === 'true') {
+          router.replace('/(tabs)/home');
+          return;
+        }
+        
         if (seen === 'true') {
           setHasSeenOnboarding(true);
         }
@@ -52,6 +59,15 @@ export default function HomeScreen() {
     }
   };
 
+  const handleLogin = async () => {
+    try {
+      await AsyncStorage.setItem('isLoggedIn', 'true');
+      router.replace('/(tabs)/home');
+    } catch (e) {
+      console.error('Error saving login status:', e);
+    }
+  };
+
   if (currentScreen === 'splash') {
     return <SplashScreen />;
   }
@@ -61,7 +77,7 @@ export default function HomeScreen() {
   }
 
   if (currentScreen === 'welcome') {
-    return <WelcomeScreen />;
+    return <WelcomeScreen onLogin={handleLogin} />;
   }
 
   return null;
