@@ -23,37 +23,37 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "20"
           cache: "npm"
-
+          cache-dependency-path: my-app/package-lock.json
 
       - name: Install dependencies
-        run: npm ci
-
+        run: |
+          cd my-app
+          npm ci
 
       - name: Run Jest Coverage Tests
-        run: npm run test:coverage
-
+        run: |
+          cd my-app
+          npm run test:coverage
 
       - name: Check coverage files
         run: |
-          ls -la coverage/
-          cat coverage/lcov.info | head -20
-
+          ls -la my-app/coverage/
+          cat my-app/coverage/lcov.info | head -20
 
       - name: Upload HTML Test Report
         uses: actions/upload-artifact@v4
         with:
           name: test-report
-          path: coverage/lcov-report/
+          path: my-app/coverage/lcov-report/
           retention-days: 7
-
 
       - name: Upload Coverage to Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: coverage-lcov
-          path: coverage/lcov.info
+          path: my-app/coverage/lcov.info
           retention-days: 7
 
 
