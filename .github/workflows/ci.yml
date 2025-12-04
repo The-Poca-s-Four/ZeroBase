@@ -33,6 +33,8 @@ jobs:
           npm ci
 
       - name: Run Jest Coverage Tests
+        env:
+          CI: false
         run: |
           cd my-app
           npm run test:coverage
