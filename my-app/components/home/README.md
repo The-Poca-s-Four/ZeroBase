@@ -1,7 +1,7 @@
 # HomeScreen Component
 
 ## Mô tả
-HomeScreen là màn hình chính của ứng dụng quản lý chi tiêu ZeroBase. Màn hình này hiển thị::
+HomeScreen là màn hình chính của ứng dụng quản lý chi tiêu ZeroBase. Màn hình này hiển thị:
 
 - **Thông tin số dư**: Giới hạn hàng ngày và số dư chưa phân bổ
 - **3 chức năng chính**:
