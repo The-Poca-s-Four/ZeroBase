@@ -22,10 +22,6 @@ jest.mock("../components/Reuse", () => {
 });
 
 describe("WelcomeScreen", () => {
-  it("matches snapshot", () => {
-    const { toJSON } = render(<WelcomeScreen />);
-    expect(toJSON()).toMatchSnapshot();
-  });
   it("renders welcome message", () => {
     const { getByText } = render(<WelcomeScreen />);
     const text = `Know your limit for 

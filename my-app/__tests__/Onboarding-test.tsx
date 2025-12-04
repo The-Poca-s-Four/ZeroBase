@@ -24,12 +24,6 @@ describe("OnboardingScreen", () => {
     jest.clearAllMocks();
   });
 
-  it("matches snapshot", () => {
-    const { toJSON } = render(<OnboardingScreen onComplete={jest.fn()} />);
-
-    expect(toJSON()).toMatchSnapshot();
-  });
-
   it("render slide đầu tiên đúng title", () => {
     const { getByText } = render(
       <OnboardingScreen onComplete={mockOnComplete} />

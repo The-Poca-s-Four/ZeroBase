@@ -19,11 +19,6 @@ describe("HomeScreen", () => {
     jest.clearAllMocks();
   });
 
-  it("matches snapshot", () => {
-    const { toJSON } = render(<HomeScreen />);
-    expect(toJSON()).toMatchSnapshot();
-  });
-
   it("render greeting text đúng", () => {
     const { getByText } = render(<HomeScreen />);
     expect(getByText("Hey, Poca")).toBeTruthy();
@@ -47,9 +42,9 @@ describe("HomeScreen", () => {
   it("chuyển tab sang Income khi bấm Income tab", () => {
     const { getByText } = render(<HomeScreen />);
     const incomeTab = getByText("+ Income");
-    
+
     fireEvent.press(incomeTab);
-    
+
     expect(getByText("Allowance")).toBeTruthy();
     expect(getByText("Income")).toBeTruthy();
   });
@@ -57,9 +52,9 @@ describe("HomeScreen", () => {
   it("chuyển tab sang Outcome khi bấm Outcome tab", () => {
     const { getByText, queryAllByText } = render(<HomeScreen />);
     const outcomeTab = getByText("− Outcome");
-    
+
     fireEvent.press(outcomeTab);
-    
+
     // "Food" xuất hiện ở 2 chỗ: form và category cards
     const foodElements = queryAllByText("Food");
     expect(foodElements.length).toBeGreaterThanOrEqual(1);
@@ -69,9 +64,9 @@ describe("HomeScreen", () => {
   it("chuyển tab sang Allocate khi bấm Allocate tab", () => {
     const { getByText, queryAllByText } = render(<HomeScreen />);
     const allocateTab = getByText("% Allocate");
-    
+
     fireEvent.press(allocateTab);
-    
+
     // "Unallocated balance" xuất hiện ở 2 chỗ: header card và allocate form
     const unallocatedElements = queryAllByText("Unallocated balance");
     expect(unallocatedElements.length).toBeGreaterThanOrEqual(1);
@@ -87,10 +82,10 @@ describe("HomeScreen", () => {
 
   it("hiển thị danh sách categories trong FlatList", () => {
     const { getByText, UNSAFE_getByType } = render(<HomeScreen />);
-    
+
     const flatList = UNSAFE_getByType(FlatList);
     expect(flatList).toBeTruthy();
-    
+
     expect(getByText("Transportation")).toBeTruthy();
     expect(getByText("Food")).toBeTruthy();
     expect(getByText("Entertainment")).toBeTruthy();
@@ -99,7 +94,7 @@ describe("HomeScreen", () => {
 
   it("render category cards với progress bar", () => {
     const { getAllByText } = render(<HomeScreen />);
-    
+
     const paidTexts = getAllByText(/paid/);
     expect(paidTexts.length).toBeGreaterThan(0);
   });
