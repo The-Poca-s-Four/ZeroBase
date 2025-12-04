@@ -55,22 +55,26 @@ describe("HomeScreen", () => {
   });
 
   it("chuyển tab sang Outcome khi bấm Outcome tab", () => {
-    const { getByText } = render(<HomeScreen />);
+    const { getByText, queryAllByText } = render(<HomeScreen />);
     const outcomeTab = getByText("− Outcome");
     
     fireEvent.press(outcomeTab);
     
-    expect(getByText("Food")).toBeTruthy();
+    // "Food" xuất hiện ở 2 chỗ: form và category cards
+    const foodElements = queryAllByText("Food");
+    expect(foodElements.length).toBeGreaterThanOrEqual(1);
     expect(getByText("Outcome")).toBeTruthy();
   });
 
   it("chuyển tab sang Allocate khi bấm Allocate tab", () => {
-    const { getByText } = render(<HomeScreen />);
+    const { getByText, queryAllByText } = render(<HomeScreen />);
     const allocateTab = getByText("% Allocate");
     
     fireEvent.press(allocateTab);
     
-    expect(getByText("Unallocated balance")).toBeTruthy();
+    // "Unallocated balance" xuất hiện ở 2 chỗ: header card và allocate form
+    const unallocatedElements = queryAllByText("Unallocated balance");
+    expect(unallocatedElements.length).toBeGreaterThanOrEqual(1);
     expect(getByText("Skincare")).toBeTruthy();
     expect(getByText("Allocated")).toBeTruthy();
   });
