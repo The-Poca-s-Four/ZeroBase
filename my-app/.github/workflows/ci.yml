@@ -1,5 +1,4 @@
 name: React Native CI - Test, Report & SonarCloud
-
 on:
   push:
     branches:
@@ -8,9 +7,11 @@ on:
     branches:
       - main
 
+
 jobs:
   test-and-analyze:
     runs-on: ubuntu-latest
+
 
     steps:
       - name: Checkout repository
@@ -18,41 +19,43 @@ jobs:
         with:
           fetch-depth: 0
 
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: "npm"
-          cache-dependency-path: my-app/package-lock.json
+
 
       - name: Install dependencies
-        run: |
-          cd my-app
-          npm ci
+        run: npm ci
+
 
       - name: Run Jest Coverage Tests
-        run: |
-          cd my-app
-          npm run test:coverage
+        run: npm run test:coverage
+
 
       - name: Check coverage files
         run: |
-          ls -la my-app/coverage/
-          cat my-app/coverage/lcov.info | head -20
+          ls -la coverage/
+          cat coverage/lcov.info | head -20
+
 
       - name: Upload HTML Test Report
         uses: actions/upload-artifact@v4
         with:
           name: test-report
-          path: my-app/coverage/lcov-report/
+          path: coverage/lcov-report/
           retention-days: 7
+
 
       - name: Upload Coverage to Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: coverage-lcov
-          path: my-app/coverage/lcov.info
+          path: coverage/lcov.info
           retention-days: 7
+
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v6
