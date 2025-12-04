@@ -5,7 +5,7 @@ HomeScreen là màn hình chính của ứng dụng quản lý chi tiêu ZeroBas
 
 - **Thông tin số dư**: Giới hạn hàng ngày và số dư chưa phân bổ
 - **3 chức năng chính**:
-  - 📉 **Outcome**: Thêm chi tiêu
+  - 📉 **Outcome**: Thêm chi tiêuu
   - 📈 **Income**: Thêm thu nhập
   - 📊 **Allocate**: Phân bổ ngân sách cho các mục
 
