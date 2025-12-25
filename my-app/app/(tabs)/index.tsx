@@ -1,8 +1,10 @@
 // @ts-nocheck
 import {
-  OnboardingScreen,
-  SplashScreen,
-  WelcomeScreen
+    LoginScreen,
+    OnboardingScreen,
+    SignupScreen,
+    SplashScreen,
+    WelcomeScreen
 } from '@/components/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
@@ -68,6 +70,18 @@ export default function MainScreen() {
     }
   };
 
+  const handleNavigateToSignup = () => {
+    setCurrentScreen('signup');
+  };
+
+  const handleNavigateToLogin = () => {
+    setCurrentScreen('login');
+  };
+
+  const handleNavigateToWelcome = () => {
+    setCurrentScreen('welcome');
+  };
+
   if (currentScreen === 'splash') {
     return <SplashScreen />;
   }
@@ -77,7 +91,15 @@ export default function MainScreen() {
   }
 
   if (currentScreen === 'welcome') {
-    return <WelcomeScreen onLogin={handleLogin} />;
+    return <WelcomeScreen onLogin={handleNavigateToLogin} onSignup={handleNavigateToSignup} />;
+  }
+
+  if (currentScreen === 'signup') {
+    return <SignupScreen onNavigateToLogin={handleNavigateToLogin} />;
+  }
+
+  if (currentScreen === 'login') {
+    return <LoginScreen onNavigateToSignup={handleNavigateToSignup} onLogin={handleLogin} />;
   }
 
   return null;

@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { AppButton, AppLogo, MenuIcon, SocialButtons } from "../Reuse";
 
-export default function WelcomeScreen({ onLogin }) {
+export default function WelcomeScreen({ onLogin, onSignup }) {
   return (
     <View style={styles.container}>
      
@@ -23,7 +23,7 @@ export default function WelcomeScreen({ onLogin }) {
           <AppButton text="Sign in" color="#fff" onPress={onLogin || (() => {})} />
 
           
-          <AppButton text="Sign up" color="#000" onPress={() => {}} />
+          <AppButton text="Sign up" color="#000" onPress={onSignup || (() => {})} />
         </View>
 
         <Text style={styles.socialTitle}>Log in with Social Media</Text>

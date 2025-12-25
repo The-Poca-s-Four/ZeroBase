@@ -1,3 +1,4 @@
+import { useAppContext } from '@/contexts/AppContext';
 import React, { useState } from 'react';
 import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -16,11 +17,17 @@ interface Category {
 }
 
 export default function ReportsScreen() {
+  const { transactions, getTotalIncome, getTotalExpense, categoryOptions } = useAppContext();
+  
   const [selectedMonth, setSelectedMonth] = useState('12/2025');
   const [mainTab, setMainTab] = useState<MainTab>('reports');
   const [categoryTab, setCategoryTab] = useState<CategoryTab>('fixed');
 
   const months = ['12/2025', '12/2025', '12/2025', '12/2025', '12/2025'];
+  
+  const totalIncome = getTotalIncome();
+  const totalExpense = getTotalExpense();
+  const unallocatedBalance = totalIncome - totalExpense;
   
   const chartData = [
     { month: 'Jan', income: 2000000, expense: 1500000 },
@@ -261,13 +268,13 @@ export default function ReportsScreen() {
             <View style={styles.summaryLeft}>
               <View style={styles.summaryRow}>
                 <Text style={styles.summaryLabel}>Expense</Text>
-                <Text style={styles.summaryExpense}>1.240.000</Text>
+                <Text style={styles.summaryExpense}>{formatAmount(totalExpense)}</Text>
               </View>
               <View style={styles.summaryRow}>
                 <Text style={styles.summaryLabel}>Income</Text>
-                <Text style={styles.summaryIncome}>1.240.000</Text>
+                <Text style={styles.summaryIncome}>{formatAmount(totalIncome)}</Text>
               </View>
-              <Text style={styles.dateText}>November 25</Text>
+              <Text style={styles.dateText}>December 25</Text>
             </View>
             <TouchableOpacity style={styles.budgetButton}>
               <Text style={styles.budgetIcon}>🏛️</Text>
@@ -280,8 +287,8 @@ export default function ReportsScreen() {
 
           {/* Pie Charts */}
           <View style={styles.pieChartsRow}>
-            {renderPieChart('INCOME', 4000000, incomeCategories)}
-            {renderPieChart('EXPENSE', 4000000, expenseCategories)}
+            {renderPieChart('INCOME', totalIncome, incomeCategories)}
+            {renderPieChart('EXPENSE', totalExpense, expenseCategories)}
           </View>
 
           {/* Get Premier Button */}

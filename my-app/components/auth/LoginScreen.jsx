@@ -1,244 +1,225 @@
+import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  TextInput,
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    View,
 } from 'react-native';
-import MenuIcon from '../Reuse/MenuIcon';
-export default function LoginScreen({ onNavigateToSignup }) {
+
+export default function LoginScreen({ onNavigateToSignup, onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
+  const handleSignIn = () => {
+    // Since there's no database yet, just login directly
+    if (onLogin) {
+      onLogin();
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.authContainer}>
-        <MenuIcon />
+      {/* Header */}
+      <View style={styles.header}>
+        <View style={styles.headerLeft} />
+        <Pressable style={styles.menuIcon}>
+          <Ionicons name="ellipsis-horizontal" size={24} color="#FFFFFF" />
+        </Pressable>
+      </View>
 
-        <View style={styles.authContent}>
-          {/* Logo and tagline */}
-          <View style={styles.authHeader}>
-            <View style={styles.piggyBankIcon}>
-              <Text style={styles.piggyBankEmoji}></Text>
+      {/* Title */}
+      <View style={styles.titleSection}>
+        <Text style={styles.title}>Welcome{'\n'}back!</Text>
+      </View>
+
+      {/* Form */}
+      <ScrollView 
+        style={styles.formScrollView}
+        contentContainerStyle={styles.formContainer}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.formCard}>
+          <Text style={styles.formTitle}>Sign in</Text>
+
+          <View style={styles.inputGroup}>
+            <View style={styles.inputWrapper}>
+              <TextInput
+                style={styles.input}
+                placeholder="sample@gmail.com"
+                placeholderTextColor="#999"
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoCapitalize="none"
+              />
+              <Pressable style={styles.inputIcon}>
+                <Ionicons name="create-outline" size={20} color="#666" />
+              </Pressable>
             </View>
-            <Text style={styles.authLogo}>Zero Base</Text>
-            <Text style={styles.authTagline}>
-              Know your limit for{'\n'}a better end of month
-            </Text>
           </View>
 
-          {/* Login form */}
-          <View style={styles.formContainer}>
-            <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>Sign in</Text>
-              <View style={styles.inputWrapper}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="sample@gmail.com"
-                  placeholderTextColor="#999"
-                  value={email}
-                  onChangeText={setEmail}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
+          <View style={styles.inputGroup}>
+            <Text style={styles.inputLabel}>Password</Text>
+            <View style={styles.inputWrapper}>
+              <TextInput
+                style={styles.input}
+                placeholder="••••••••"
+                placeholderTextColor="#999"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={!showPassword}
+              />
+              <Pressable
+                style={styles.inputIcon}
+                onPress={() => setShowPassword(!showPassword)}
+              >
+                <Ionicons 
+                  name={showPassword ? "eye-outline" : "eye-off-outline"} 
+                  size={20} 
+                  color="#666" 
                 />
-                <Pressable style={styles.inputIcon}>
-                  <Text></Text>
-                </Pressable>
-              </View>
-            </View>
-
-            <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>Password</Text>
-              <View style={styles.inputWrapper}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="••••••••"
-                  placeholderTextColor="#999"
-                  value={password}
-                  onChangeText={setPassword}
-                  secureTextEntry={!showPassword}
-                />
-                <Pressable
-                  style={styles.inputIcon}
-                  onPress={() => setShowPassword(!showPassword)}
-                >
-                  <Text></Text>
-                </Pressable>
-              </View>
-              <Pressable>
-                <Text style={styles.forgotPassword}>Forgot password?</Text>
               </Pressable>
             </View>
-
-            <Pressable style={styles.signInButton}>
-              <Text style={styles.signInButtonText}>Sign in</Text>
+            <Pressable style={styles.forgotPasswordButton}>
+              <Text style={styles.forgotPassword}>Forgot password?</Text>
             </Pressable>
+          </View>
 
-            <Pressable style={styles.signUpButton} onPress={onNavigateToSignup}>
-              <Text style={styles.signUpButtonText}>Signup</Text>
+          <Pressable style={styles.signInButton} onPress={handleSignIn}>
+            <Text style={styles.signInButtonText}>Sign in</Text>
+          </Pressable>
+
+          <View style={styles.signupFooter}>
+            <Text style={styles.dontHaveAccount}>Don't have account? </Text>
+            <Pressable onPress={onNavigateToSignup}>
+              <Text style={styles.signUpLink}>Sign up</Text>
             </Pressable>
-
-            <Text style={styles.socialText}>Log in with Social Media</Text>
-            <View style={styles.socialButtons}>
-              <Pressable style={styles.socialButton}>
-                <Text style={styles.socialIcon}>f</Text>
-              </Pressable>
-              <Pressable style={styles.socialButton}>
-                <Text style={styles.socialIcon}>𝕏</Text>
-              </Pressable>
-              <Pressable style={styles.socialButton}>
-                <Text style={styles.socialIcon}>G</Text>
-              </Pressable>
-            </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#000000',
+  },
+  header: {
     flexDirection: 'row',
-    backgroundColor: '#000',
-  },
-  sidebar: {
-    width: 178,
-    backgroundColor: '#1a1a1a',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: 20,
     paddingTop: 60,
+    paddingBottom: 20,
   },
-  logo: {
-    fontSize: 20,
+  headerLeft: {
+    width: 24,
+  },
+  menuIcon: {
+    padding: 8,
+  },
+  titleSection: {
+    paddingHorizontal: 30,
+    paddingTop: 20,
+    paddingBottom: 40,
+  },
+  title: {
+    fontSize: 48,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#FFFFFF',
+    lineHeight: 56,
   },
-  authContainer: {
+  formScrollView: {
     flex: 1,
-    backgroundColor: '#f5d5d5',
-  },
-
-  authContent: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 40,
-  },
-  authHeader: {
-    alignItems: 'center',
-    marginBottom: 40,
-  },
-  piggyBankIcon: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  piggyBankEmoji: {
-    fontSize: 32,
-  },
-  authLogo: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#000',
-    marginBottom: 12,
-  },
-  authTagline: {
-    fontSize: 14,
-    color: '#666',
-    textAlign: 'center',
-    lineHeight: 20,
   },
   formContainer: {
-    width: '100%',
-    maxWidth: 400,
+    flexGrow: 1,
+  },
+  formCard: {
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingHorizontal: 30,
+    paddingTop: 40,
+    paddingBottom: 60,
+    minHeight: '100%',
+  },
+  formTitle: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#000000',
+    marginBottom: 30,
   },
   inputGroup: {
-    marginBottom: 20,
+    marginBottom: 24,
   },
   inputLabel: {
-    fontSize: 14,
-    color: '#000',
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#000000',
     marginBottom: 8,
-    fontWeight: '500',
   },
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    backgroundColor: '#FAFAFA',
   },
   input: {
     flex: 1,
+    height: 56,
     fontSize: 16,
-    color: '#000',
-    paddingVertical: 8,
+    color: '#000000',
   },
   inputIcon: {
     padding: 8,
+    marginLeft: 8,
   },
-  forgotPassword: {
-    fontSize: 12,
-    color: '#666',
-    textAlign: 'right',
+  forgotPasswordButton: {
+    alignSelf: 'flex-end',
     marginTop: 8,
   },
+  forgotPassword: {
+    fontSize: 14,
+    color: '#666666',
+  },
   signInButton: {
-    backgroundColor: '#000',
-    paddingVertical: 16,
-    borderRadius: 30,
+    backgroundColor: '#000000',
+    borderRadius: 12,
+    height: 56,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 12,
+    marginTop: 16,
   },
   signInButtonText: {
-    color: '#fff',
-    fontSize: 16,
+    color: '#FFFFFF',
+    fontSize: 18,
     fontWeight: '600',
   },
-  signUpButton: {
-    backgroundColor: 'transparent',
-    paddingVertical: 16,
-    borderRadius: 30,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#000',
-    marginBottom: 20,
-  },
-  signUpButtonText: {
-    color: '#000',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  socialText: {
-    fontSize: 14,
-    color: '#666',
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  socialButtons: {
+  signupFooter: {
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: 16,
-  },
-  socialButton: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: '#000',
-    justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 24,
   },
-  socialIcon: {
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: 'bold',
+  dontHaveAccount: {
+    fontSize: 16,
+    color: '#666666',
+  },
+  signUpLink: {
+    fontSize: 16,
+    color: '#000000',
+    fontWeight: '600',
   },
 });
+

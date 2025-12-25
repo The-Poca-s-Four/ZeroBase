@@ -1,36 +1,18 @@
+import { useAppContext } from '@/contexts/AppContext';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 type TransactionType = 'income' | 'expense';
 type FilterType = 'all' | 'expense' | 'income';
 
-interface Transaction {
-  id: string;
-  title: string;
-  category: string;
-  amount: number;
-  type: TransactionType;
-  date: string;
-}
-
 export default function HistoryScreen() {
+  const { transactions, getTotalIncome, getTotalExpense } = useAppContext();
   const [filterType, setFilterType] = useState<FilterType>('all');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-  // Sample data - replace with actual data from your state management
-  const transactions: Transaction[] = [
-    { id: '1', title: 'Buy cake', category: 'Food', amount: 500000, type: 'expense', date: '2025-11-25' },
-    { id: '2', title: 'Buy cake', category: 'Food', amount: 500000, type: 'expense', date: '2025-11-25' },
-    { id: '3', title: 'Buy cake', category: 'Food', amount: 500000, type: 'expense', date: '2025-11-25' },
-    { id: '4', title: 'Buy cake', category: 'Food', amount: 500000, type: 'expense', date: '2025-11-25' },
-    { id: '5', title: 'Buy cake', category: 'Food', amount: 500000, type: 'expense', date: '2025-11-25' },
-    { id: '6', title: 'Buy cake', category: 'Food', amount: 500000, type: 'expense', date: '2025-11-25' },
-    { id: '7', title: 'Buy cake', category: 'Food', amount: 500000, type: 'expense', date: '2025-11-25' },
-  ];
-
-  const totalIncome = 1240000;
-  const totalExpense = 1240000;
-  const unallocatedBalance = 1240000;
+  const totalIncome = getTotalIncome();
+  const totalExpense = getTotalExpense();
+  const unallocatedBalance = totalIncome - totalExpense;
 
   const filteredTransactions = transactions.filter(transaction => {
     if (filterType === 'all') return true;
@@ -39,6 +21,11 @@ export default function HistoryScreen() {
 
   const formatAmount = (amount: number) => {
     return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
   };
 
   return (
@@ -99,23 +86,31 @@ export default function HistoryScreen() {
 
       {/* Transaction List */}
       <View style={styles.transactionList}>
-        {filteredTransactions.map((transaction) => (
-          <TouchableOpacity key={transaction.id} style={styles.transactionItem}>
-            <View style={styles.transactionInfo}>
-              <Text style={styles.transactionTitle}>{transaction.title}</Text>
-              <Text style={styles.transactionCategory}>{transaction.category}</Text>
-            </View>
-            <View style={styles.transactionRight}>
-              <Text style={[
-                styles.transactionAmount,
-                transaction.type === 'expense' ? styles.expenseAmount : styles.incomeAmount
-              ]}>
-                {formatAmount(transaction.amount)}
-              </Text>
-              <Text style={styles.chevron}>›</Text>
-            </View>
-          </TouchableOpacity>
-        ))}
+        {filteredTransactions.length > 0 ? (
+          filteredTransactions.map((transaction) => (
+            <TouchableOpacity key={transaction.id} style={styles.transactionItem}>
+              <View style={styles.transactionInfo}>
+                <Text style={styles.transactionTitle}>{transaction.note || transaction.category}</Text>
+                <Text style={styles.transactionCategory}>{transaction.category}</Text>
+                <Text style={styles.transactionDate}>{formatDate(transaction.date)}</Text>
+              </View>
+              <View style={styles.transactionRight}>
+                <Text style={[
+                  styles.transactionAmount,
+                  transaction.type === 'expense' ? styles.expenseAmount : styles.incomeAmount
+                ]}>
+                  {transaction.type === 'income' ? '+' : ''}{formatAmount(transaction.amount)}
+                </Text>
+                <Text style={styles.chevron}>›</Text>
+              </View>
+            </TouchableOpacity>
+          ))
+        ) : (
+          <View style={styles.emptyState}>
+            <Text style={styles.emptyStateText}>No transactions yet</Text>
+            <Text style={styles.emptyStateSubtext}>Add your first transaction from the Home screen</Text>
+          </View>
+        )}
       </View>
 
       {/* Get Premier Button */}
@@ -277,6 +272,11 @@ const styles = StyleSheet.create({
   transactionCategory: {
     fontSize: 14,
     color: '#999999',
+    marginBottom: 2,
+  },
+  transactionDate: {
+    fontSize: 12,
+    color: '#CCCCCC',
   },
   transactionRight: {
     flexDirection: 'row',
@@ -296,6 +296,21 @@ const styles = StyleSheet.create({
   chevron: {
     fontSize: 20,
     color: '#CCCCCC',
+  },
+  emptyState: {
+    alignItems: 'center',
+    paddingVertical: 40,
+  },
+  emptyStateText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#666',
+    marginBottom: 8,
+  },
+  emptyStateSubtext: {
+    fontSize: 14,
+    color: '#999',
+    textAlign: 'center',
   },
   premierContainer: {
     paddingHorizontal: 20,

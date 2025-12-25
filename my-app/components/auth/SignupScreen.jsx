@@ -1,10 +1,12 @@
+import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    View,
 } from 'react-native';
 
 export default function SignupScreen({ onNavigateToLogin }) {
@@ -17,108 +19,120 @@ export default function SignupScreen({ onNavigateToLogin }) {
 
   return (
     <View style={styles.container}>
-      {/* Left sidebar */}
-      <View style={styles.sidebar}>
-        <Text style={styles.logo}>Zero Base</Text>
+      {/* Header */}
+      <View style={styles.header}>
+        <View style={styles.headerLeft} />
+        <Pressable style={styles.menuIcon}>
+          <Ionicons name="ellipsis-horizontal" size={24} color="#FFFFFF" />
+        </Pressable>
       </View>
 
-      {/* Right content area */}
-      <View style={styles.authContainer}>
-        <View style={styles.menuIcon}>
-          <Text style={styles.menuDots}>⋯</Text>
-        </View>
+      {/* Title */}
+      <View style={styles.titleSection}>
+        <Text style={styles.title}>Create your{'\n'}account!</Text>
+      </View>
 
-        <View style={styles.authContent}>
-          <View style={styles.signupCard}>
-            <Text style={styles.signupTitle}>Create your account!</Text>
-
-            <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>Name</Text>
-              <View style={styles.inputWrapper}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="The Poca's Four"
-                  placeholderTextColor="#999"
-                  value={name}
-                  onChangeText={setName}
-                />
-                <Pressable style={styles.inputIcon}>
-                  <Text></Text>
-                </Pressable>
-              </View>
-            </View>
-
-            <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>Email</Text>
-              <View style={styles.inputWrapper}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="sample@gmail.com"
-                  placeholderTextColor="#999"
-                  value={email}
-                  onChangeText={setEmail}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                />
-                <Pressable style={styles.inputIcon}>
-                  <Text></Text>
-                </Pressable>
-              </View>
-            </View>
-
-            <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>Password</Text>
-              <View style={styles.inputWrapper}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="••••••••"
-                  placeholderTextColor="#999"
-                  value={password}
-                  onChangeText={setPassword}
-                  secureTextEntry={!showPassword}
-                />
-                <Pressable
-                  style={styles.inputIcon}
-                  onPress={() => setShowPassword(!showPassword)}
-                >
-                  <Text></Text>
-                </Pressable>
-              </View>
-            </View>
-
-            <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>Confirm password</Text>
-              <View style={styles.inputWrapper}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="••••••••"
-                  placeholderTextColor="#999"
-                  value={confirmPassword}
-                  onChangeText={setConfirmPassword}
-                  secureTextEntry={!showConfirmPassword}
-                />
-                <Pressable
-                  style={styles.inputIcon}
-                  onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-                >
-                  <Text></Text>
-                </Pressable>
-              </View>
-            </View>
-
-            <Pressable style={styles.signUpMainButton}>
-              <Text style={styles.signUpMainButtonText}>Sign up</Text>
-            </Pressable>
-
-            <View style={styles.signupFooter}>
-              <Text style={styles.alreadyHaveAccount}>Already have account?</Text>
-              <Pressable onPress={onNavigateToLogin}>
-                <Text style={styles.signInLink}>Sign in</Text>
+      {/* Form */}
+      <ScrollView 
+        style={styles.formScrollView}
+        contentContainerStyle={styles.formContainer}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.formCard}>
+          <View style={styles.inputGroup}>
+            <Text style={styles.inputLabel}>Name</Text>
+            <View style={styles.inputWrapper}>
+              <TextInput
+                style={styles.input}
+                placeholder="The Poca's Four"
+                placeholderTextColor="#999"
+                value={name}
+                onChangeText={setName}
+              />
+              <Pressable style={styles.inputIcon}>
+                <Ionicons name="create-outline" size={20} color="#666" />
               </Pressable>
             </View>
           </View>
+
+          <View style={styles.inputGroup}>
+            <Text style={styles.inputLabel}>Email</Text>
+            <View style={styles.inputWrapper}>
+              <TextInput
+                style={styles.input}
+                placeholder="sample@gmail.com"
+                placeholderTextColor="#999"
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoCapitalize="none"
+              />
+              <Pressable style={styles.inputIcon}>
+                <Ionicons name="create-outline" size={20} color="#666" />
+              </Pressable>
+            </View>
+          </View>
+
+          <View style={styles.inputGroup}>
+            <Text style={styles.inputLabel}>Password</Text>
+            <View style={styles.inputWrapper}>
+              <TextInput
+                style={styles.input}
+                placeholder="••••••••"
+                placeholderTextColor="#999"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={!showPassword}
+              />
+              <Pressable
+                style={styles.inputIcon}
+                onPress={() => setShowPassword(!showPassword)}
+              >
+                <Ionicons 
+                  name={showPassword ? "eye-outline" : "eye-off-outline"} 
+                  size={20} 
+                  color="#666" 
+                />
+              </Pressable>
+            </View>
+          </View>
+
+          <View style={styles.inputGroup}>
+            <Text style={styles.inputLabel}>Confirm password</Text>
+            <View style={styles.inputWrapper}>
+              <TextInput
+                style={styles.input}
+                placeholder="••••••••"
+                placeholderTextColor="#999"
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+                secureTextEntry={!showConfirmPassword}
+              />
+              <Pressable
+                style={styles.inputIcon}
+                onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                <Ionicons 
+                  name={showConfirmPassword ? "eye-outline" : "eye-off-outline"} 
+                  size={20} 
+                  color="#666" 
+                />
+              </Pressable>
+            </View>
+          </View>
+
+          <Pressable style={styles.signUpButton}>
+            <Text style={styles.signUpButtonText}>Sign up</Text>
+          </Pressable>
+
+          <View style={styles.signupFooter}>
+            <Text style={styles.alreadyHaveAccount}>Already have Account? </Text>
+            <Pressable onPress={onNavigateToLogin}>
+              <Text style={styles.signInLink}>Sign in</Text>
+            </Pressable>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }
@@ -126,91 +140,88 @@ export default function SignupScreen({ onNavigateToLogin }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#2B2B2B',
+  },
+  header: {
     flexDirection: 'row',
-    backgroundColor: '#000',
-  },
-  sidebar: {
-    width: 178,
-    backgroundColor: '#1a1a1a',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: 20,
     paddingTop: 60,
+    paddingBottom: 20,
   },
-  logo: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-  authContainer: {
-    flex: 1,
-    backgroundColor: '#f5d5d5',
+  headerLeft: {
+    width: 24,
   },
   menuIcon: {
-    position: 'absolute',
-    top: 20,
-    right: 20,
-    zIndex: 10,
+    padding: 8,
   },
-  menuDots: {
-    fontSize: 24,
-    color: '#000',
+  titleSection: {
+    paddingHorizontal: 30,
+    paddingBottom: 30,
+  },
+  title: {
+    fontSize: 42,
     fontWeight: 'bold',
+    color: '#FFFFFF',
+    lineHeight: 50,
   },
-  authContent: {
+  formScrollView: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 40,
   },
-  signupCard: {
-    backgroundColor: '#fff',
-    borderRadius: 20,
-    padding: 40,
-    width: '100%',
-    maxWidth: 400,
-    boxShadow: '0px 4px 8px rgba(0,0,0,0.1)',
-    elevation: 5,
+  formContainer: {
+    flexGrow: 1,
   },
-  signupTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#000',
-    marginBottom: 30,
-    textAlign: 'center',
+  formCard: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingHorizontal: 30,
+    paddingTop: 40,
+    paddingBottom: 30,
+    minHeight: '100%',
   },
   inputGroup: {
-    marginBottom: 20,
+    marginBottom: 24,
   },
   inputLabel: {
-    fontSize: 14,
-    color: '#000',
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#000000',
     marginBottom: 8,
-    fontWeight: '500',
   },
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomColor: '#CCCCCC',
+    paddingBottom: 4,
   },
   input: {
     flex: 1,
     fontSize: 16,
-    color: '#000',
+    color: '#666666',
     paddingVertical: 8,
+    paddingRight: 8,
   },
   inputIcon: {
-    padding: 8,
+    padding: 4,
   },
-  signUpMainButton: {
-    backgroundColor: '#000',
-    paddingVertical: 16,
+  signUpButton: {
+    backgroundColor: '#2B2B2B',
+    paddingVertical: 18,
     borderRadius: 30,
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 30,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
   },
-  signUpMainButtonText: {
-    color: '#fff',
+  signUpButtonText: {
+    color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
   },
@@ -218,16 +229,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
-    gap: 8,
+    marginTop: 24,
   },
   alreadyHaveAccount: {
     fontSize: 14,
-    color: '#666',
+    color: '#999999',
   },
   signInLink: {
     fontSize: 14,
-    color: '#000',
-    fontWeight: '600',
+    color: '#000000',
+    fontWeight: '700',
   },
 });
