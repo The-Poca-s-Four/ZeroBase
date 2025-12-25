@@ -1,6 +1,6 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { MenuIcon, SocialButtons, AppLogo, AppButton } from "../Reuse";
+import { StyleSheet, Text, View } from "react-native";
+import { AppButton, AppLogo, MenuIcon, SocialButtons } from "../Reuse";
 
 export default function WelcomeScreen({ onLogin }) {
   return (
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 16,
   },
+  // Test
 
   subtitle: {
     marginTop: 8,
