@@ -7,15 +7,97 @@ import {
     Text,
     TextInput,
     View,
+    Alert,
+    ActivityIndicator
 } from 'react-native';
+import { signup } from '@/services/api';
+// Remove direct AsyncStorage use if possible, or keep if context needs it? Context handles it now.
+import { useAppContext } from '@/contexts/AppContext';
 
-export default function SignupScreen({ onNavigateToLogin }) {
+export default function SignupScreen({ onNavigateToLogin, onLogin }) {
+  const { login: contextLogin } = useAppContext();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [errors, setErrors] = useState({ name: '', email: '', password: '', confirmPassword: '' });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const validate = () => {
+    let isValid = true;
+    let newErrors = { name: '', email: '', password: '', confirmPassword: '' };
+
+    if (!name) {
+        newErrors.name = 'Name is required';
+        isValid = false;
+    }
+
+    if (!email) {
+        newErrors.email = 'Email is required';
+        isValid = false;
+    } else {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            newErrors.email = 'Please enter a valid email address';
+            isValid = false;
+        }
+    }
+
+    if (!password) {
+        newErrors.password = 'Password is required';
+        isValid = false;
+    } else if (password.length < 6) {
+        newErrors.password = 'Password must be at least 6 characters long';
+        isValid = false;
+    }
+
+    if (password !== confirmPassword) {
+        newErrors.confirmPassword = 'Passwords do not match';
+        isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const handleSignup = async () => {
+    if (!validate()) return;
+
+    try {
+      setIsLoading(true);
+      const response = await signup({ 
+        username: email, // Using email as username for now
+        password,
+        email,
+        name 
+      });
+
+      if (response.success) {
+        // Auto-login after signup using context to set user and clear cache
+        await contextLogin(response.user);
+
+        if (onLogin) {
+            onLogin();
+        } else {
+             // Fallback if onLogin is not passed (though it should be)
+             Alert.alert('Success', 'Account created successfully! Please login.', [
+                { text: 'OK', onPress: onNavigateToLogin }
+             ]);
+        }
+      }
+    } catch (error) {
+      console.error("Signup failed:", error);
+      if (error.response && error.response.status === 409) {
+          Alert.alert("Error", "Account already exists");
+      } else {
+          Alert.alert("Error", "Failed to create account. Please try again.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -41,29 +123,30 @@ export default function SignupScreen({ onNavigateToLogin }) {
         <View style={styles.formCard}>
           <View style={styles.inputGroup}>
             <Text style={styles.inputLabel}>Name</Text>
-            <View style={styles.inputWrapper}>
+            <View style={[styles.inputWrapper, { borderBottomColor: errors.name ? '#FF6B6B' : '#CCCCCC' }]}>
               <TextInput
                 style={styles.input}
                 placeholder="The Poca's Four"
                 placeholderTextColor="#999"
                 value={name}
-                onChangeText={setName}
+                onChangeText={(text) => { setName(text); setErrors({...errors, name: ''}); }}
               />
               <Pressable style={styles.inputIcon}>
                 <Ionicons name="create-outline" size={20} color="#666" />
               </Pressable>
             </View>
+            {errors.name ? <Text style={styles.errorText}>{errors.name}</Text> : null}
           </View>
 
           <View style={styles.inputGroup}>
             <Text style={styles.inputLabel}>Email</Text>
-            <View style={styles.inputWrapper}>
+            <View style={[styles.inputWrapper, { borderBottomColor: errors.email ? '#FF6B6B' : '#CCCCCC' }]}>
               <TextInput
                 style={styles.input}
                 placeholder="sample@gmail.com"
                 placeholderTextColor="#999"
                 value={email}
-                onChangeText={setEmail}
+                onChangeText={(text) => { setEmail(text); setErrors({...errors, email: ''}); }}
                 keyboardType="email-address"
                 autoCapitalize="none"
               />
@@ -71,17 +154,18 @@ export default function SignupScreen({ onNavigateToLogin }) {
                 <Ionicons name="create-outline" size={20} color="#666" />
               </Pressable>
             </View>
+            {errors.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
           </View>
 
           <View style={styles.inputGroup}>
             <Text style={styles.inputLabel}>Password</Text>
-            <View style={styles.inputWrapper}>
+            <View style={[styles.inputWrapper, { borderBottomColor: errors.password ? '#FF6B6B' : '#CCCCCC' }]}>
               <TextInput
                 style={styles.input}
                 placeholder="••••••••"
                 placeholderTextColor="#999"
                 value={password}
-                onChangeText={setPassword}
+                onChangeText={(text) => { setPassword(text); setErrors({...errors, password: ''}); }}
                 secureTextEntry={!showPassword}
               />
               <Pressable
@@ -95,17 +179,18 @@ export default function SignupScreen({ onNavigateToLogin }) {
                 />
               </Pressable>
             </View>
+            {errors.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
           </View>
 
           <View style={styles.inputGroup}>
             <Text style={styles.inputLabel}>Confirm password</Text>
-            <View style={styles.inputWrapper}>
+            <View style={[styles.inputWrapper, { borderBottomColor: errors.confirmPassword ? '#FF6B6B' : '#CCCCCC' }]}>
               <TextInput
                 style={styles.input}
                 placeholder="••••••••"
                 placeholderTextColor="#999"
                 value={confirmPassword}
-                onChangeText={setConfirmPassword}
+                onChangeText={(text) => { setConfirmPassword(text); setErrors({...errors, confirmPassword: ''}); }}
                 secureTextEntry={!showConfirmPassword}
               />
               <Pressable
@@ -119,10 +204,15 @@ export default function SignupScreen({ onNavigateToLogin }) {
                 />
               </Pressable>
             </View>
+            {errors.confirmPassword ? <Text style={styles.errorText}>{errors.confirmPassword}</Text> : null}
           </View>
 
-          <Pressable style={styles.signUpButton}>
-            <Text style={styles.signUpButtonText}>Sign up</Text>
+          <Pressable style={styles.signUpButton} onPress={handleSignup} disabled={isLoading}>
+            {isLoading ? (
+                <ActivityIndicator color="#FFF" />
+            ) : (
+                <Text style={styles.signUpButtonText}>Sign up</Text>
+            )}
           </Pressable>
 
           <View style={styles.signupFooter}>
@@ -239,5 +329,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#000000',
     fontWeight: '700',
+  },
+  errorText: {
+    color: '#FF6B6B',
+    fontSize: 12,
+    marginTop: 4,
   },
 });

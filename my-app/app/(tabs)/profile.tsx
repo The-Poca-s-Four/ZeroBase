@@ -4,8 +4,11 @@ import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 
+import { useAppContext } from '@/contexts/AppContext';
+
 export default function ProfileScreen() {
-  const handleLogout = async () => {
+    const { user } = useAppContext();
+    const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem('isLoggedIn');
       router.replace('/(tabs)');
@@ -26,8 +29,8 @@ export default function ProfileScreen() {
           <View style={styles.avatar}>
             <Ionicons name="person" size={60} color="#666" />
           </View>
-          <Text style={styles.username}>Poca</Text>
-          <Text style={styles.email}>poca@example.com</Text>
+          <Text style={styles.username}>{user?.name || 'User'}</Text>
+          <Text style={styles.email}>{user?.email || user?.username || 'user@zerobase.com'}</Text>
         </View>
 
         {/* Menu Items */}
@@ -50,7 +53,7 @@ export default function ProfileScreen() {
             <Ionicons name="chevron-forward" size={24} color="#666" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/guide')}>
             <Ionicons name="help-circle-outline" size={24} color="#FFF" />
             <Text style={styles.menuText}>Help & Support</Text>
             <Ionicons name="chevron-forward" size={24} color="#666" />

@@ -16,21 +16,21 @@ const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const onboardingData = [
   {
     id: 1,
-    title: "Manage your money",
+    title: "Track where your money goes",
     description:
-      "I wanna help u guys manage your money better, maybe, but it still depends.",
+      "Get a clear picture of your daily, weekly, and monthly spending so you always know where your money is going.",
   },
   {
     id: 2,
-    title: "Track your spending",
+    title: "Set smart limits fit your lifestyle",
     description:
-      "Set budgets and see where your cash goes in real time.",
+      "Create flexible spending limits to avoid overspending and stay in control throughout the month.",
   },
   {
     id: 3,
-    title: "Reach your goals",
+    title: "Achieve your financial goals faster",
     description:
-      "Save smarter with reminders and simple plans.",
+      "Set goals, track your progress, and build healthy habits that bring you closer to financial freedom.",
   },
 ];
 

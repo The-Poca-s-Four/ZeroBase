@@ -1,50 +1,65 @@
-# Welcome to your Expo app 👋
+# ZeroBase Frontend (ZeroBase/my-app)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is the mobile frontend for the ZeroBase application, built with **Expo** and **React Native**. It connects to the ZeroBase backend for data persistence and authentication.
 
-## Get started
+## 🚀 Prerequisites
 
-1. Install dependencies
+- **Node.js** (v18 or later)
+- **Expo CLI**: `npm install -g expo-cli`
+- **Android Studio** (for Android Emulator) or **Expo Go** app on your phone.
 
-   ```bash
-   npm install
-   ```
+## 🛠 Installation
 
-2. Start the app
+1.  Navigate to the `my-app` directory:
+    ```bash
+    cd src/ZeroBase/my-app
+    ```
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
 
-   ```bash
-   npx expo start
-   ```
+## 🏃‍♂️ Running Locally
 
-In the output, you'll find options to open the app in a
+1.  **Start the Expo Server**:
+    ```bash
+    npx expo start
+    ```
+    OR to run specifically for web:
+    ```bash
+    npm run web
+    ```
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+2.  **Open the App**:
+    -   **Android Emulator**: Press `a` in the terminal.
+    -   **Web Browser**: Press `w`.
+    -   **Mobile Device**: Scan the QR code using the Expo Go app.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 🔗 Backend Connection
 
-## Get a fresh project
+The app interacts with the backend via `services/api.ts`.
+By default, it is configured to connect to the local Firebase Emulator:
+-   **Base URL**: `http://10.0.2.2:5002/zerobasebe/us-central1/api` (Special IP for Android Emulator to access host localhost).
 
-When you're ready, run:
+> **Note**: If running on a physical device or web, you might need to update the API base URL to your machine's local IP address (e.g., `http://192.168.1.5:5002...`).
 
-```bash
-npm run reset-project
-```
+## 📂 Project Structure
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+-   `app/`: Expo Router pages (screens).
+    -   `(tabs)/`: Main tab navigation (Home, Budget, Profile).
+    -   `guide.tsx`: User Guide screen.
+-   `components/`: Reusable UI components.
+    -   `auth/`: Login and Signup screens.
+    -   `home/`: Home screen components (SafeToSpendCard, TransactionList).
+    -   `QuickAddModal.tsx`: Modal for adding transactions.
+-   `contexts/`: Global state management (AppContext).
+-   `services/`: API communication (api.ts).
 
-## Learn more
+## ✨ Key Features
 
-To learn more about developing your project with Expo, look at the following resources:
+-   **Zero-Based Budgeting**: "Income - Expense = 0" philosophy.
+-   **Quick Add**: Fast transaction entry.
+-   **Safe-to-Spend**: Real-time calculation of spendable funds.
+-   **Multi-user Support**: Data isolation per user.
+-   **User Guide**: Built-in documentation.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.

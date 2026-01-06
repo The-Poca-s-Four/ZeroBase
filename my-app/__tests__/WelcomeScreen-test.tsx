@@ -10,7 +10,7 @@ jest.mock("../components/Reuse", () => {
   return {
     __esModule: true,
     MenuIcon: () => <View testID="menu-icon" />,
-    AppButton: ({ text }) => (
+    AppButton: ({ text }: { text: string }) => (
       <Text testID={`app-button-${text}`} onPress={mockOnPress}>
         {text}
       </Text>
@@ -23,20 +23,20 @@ jest.mock("../components/Reuse", () => {
 
 describe("WelcomeScreen", () => {
   it("renders welcome message", () => {
-    const { getByText } = render(<WelcomeScreen />);
+    const { getByText } = render(<WelcomeScreen onLogin={mockOnPress} />);
     const text = `Know your limit for 
 a better end of month`;
 
     expect(getByText(text)).toBeTruthy();
   });
   it("calls onPress when sign in button is pressed", () => {
-    const { getByTestId } = render(<WelcomeScreen />);
+    const { getByTestId } = render(<WelcomeScreen onLogin={mockOnPress} />);
     const button = getByTestId("app-button-Sign in");
     fireEvent.press(button);
     expect(mockOnPress).toHaveBeenCalled();
   });
   it("calls onPress when sign up button is pressed", () => {
-    const { getByTestId } = render(<WelcomeScreen />);
+    const { getByTestId } = render(<WelcomeScreen onLogin={mockOnPress} />);
     const button = getByTestId("app-button-Sign up");
     fireEvent.press(button);
     expect(mockOnPress).toHaveBeenCalled();

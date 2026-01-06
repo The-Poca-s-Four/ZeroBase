@@ -7,17 +7,63 @@ import {
     Text,
     TextInput,
     View,
+    Alert,
+    ActivityIndicator
 } from 'react-native';
+import { login } from '@/services/api';
+// Remove direct AsyncStorage use if possible, or keep if context needs it? Context handles it now.
+import { useAppContext } from '@/contexts/AppContext';
 
 export default function LoginScreen({ onNavigateToSignup, onLogin }) {
+  const { login: contextLogin } = useAppContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState({ email: '', password: '', general: '' });
 
-  const handleSignIn = () => {
-    // Since there's no database yet, just login directly
-    if (onLogin) {
-      onLogin();
+  const validate = () => {
+    let isValid = true;
+    let newErrors = { email: '', password: '', general: '' };
+
+    if (!email) {
+      newErrors.email = 'Email is required';
+      isValid = false;
+    }
+
+    if (!password) {
+      newErrors.password = 'Password is required';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const handleSignIn = async () => {
+    if (!validate()) return;
+
+    try {
+      setIsLoading(true);
+      const response = await login({ username: email, password });
+      
+      if (response.success) {
+        // Use context login to ensure state update and cache clear
+        await contextLogin(response.user);
+        
+        if (onLogin) await onLogin();
+      }
+    } catch (error) {
+      // console.error("Login failed:", error); // Suppressed as per user request to avoid LogBox overlay
+      setErrors(prev => ({ 
+        ...prev, 
+        general: "Invalid username or password (if you don't have an account, please register)" 
+      }));
+    } finally {
+        // No need to set loading false if we successfully logged in and are navigating away
+        // But to be safe check if we are still active? 
+        // Simpler: Just don't set loading false if success
+        setIsLoading(false);
     }
   };
 
@@ -46,13 +92,13 @@ export default function LoginScreen({ onNavigateToSignup, onLogin }) {
           <Text style={styles.formTitle}>Sign in</Text>
 
           <View style={styles.inputGroup}>
-            <View style={styles.inputWrapper}>
+            <View style={[styles.inputWrapper, { borderColor: errors.email ? '#FF6B6B' : '#E0E0E0' }]}>
               <TextInput
                 style={styles.input}
                 placeholder="sample@gmail.com"
                 placeholderTextColor="#999"
                 value={email}
-                onChangeText={setEmail}
+                onChangeText={(text) => { setEmail(text); setErrors({...errors, email: '', general: ''}); }}
                 keyboardType="email-address"
                 autoCapitalize="none"
               />
@@ -60,17 +106,18 @@ export default function LoginScreen({ onNavigateToSignup, onLogin }) {
                 <Ionicons name="create-outline" size={20} color="#666" />
               </Pressable>
             </View>
+            {errors.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
           </View>
 
           <View style={styles.inputGroup}>
             <Text style={styles.inputLabel}>Password</Text>
-            <View style={styles.inputWrapper}>
+            <View style={[styles.inputWrapper, { borderColor: errors.password ? '#FF6B6B' : '#E0E0E0' }]}>
               <TextInput
                 style={styles.input}
                 placeholder="••••••••"
                 placeholderTextColor="#999"
                 value={password}
-                onChangeText={setPassword}
+                onChangeText={(text) => { setPassword(text); setErrors({...errors, password: '', general: ''}); }}
                 secureTextEntry={!showPassword}
               />
               <Pressable
@@ -84,13 +131,20 @@ export default function LoginScreen({ onNavigateToSignup, onLogin }) {
                 />
               </Pressable>
             </View>
+            {errors.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
             <Pressable style={styles.forgotPasswordButton}>
               <Text style={styles.forgotPassword}>Forgot password?</Text>
             </Pressable>
           </View>
 
-          <Pressable style={styles.signInButton} onPress={handleSignIn}>
-            <Text style={styles.signInButtonText}>Sign in</Text>
+          {errors.general ? <Text style={styles.generalErrorText}>{errors.general}</Text> : null}
+
+          <Pressable style={styles.signInButton} onPress={handleSignIn} disabled={isLoading}>
+            {isLoading ? (
+              <ActivityIndicator color="#FFF" />
+            ) : (
+              <Text style={styles.signInButtonText}>Sign in</Text>
+            )}
           </Pressable>
 
           <View style={styles.signupFooter}>
@@ -220,6 +274,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#000000',
     fontWeight: '600',
+  },
+  errorText: {
+    color: '#FF6B6B',
+    fontSize: 12,
+    marginTop: 4,
+  },
+  generalErrorText: {
+    color: '#FF6B6B',
+    fontSize: 14,
+    textAlign: 'center',
+    marginBottom: 10,
   },
 });
 

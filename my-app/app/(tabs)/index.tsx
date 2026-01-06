@@ -6,6 +6,7 @@ import {
     SplashScreen,
     WelcomeScreen
 } from '@/components/auth';
+import BudgetSetupScreen from '@/components/setup/BudgetSetupScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
@@ -13,14 +14,21 @@ import React, { useEffect, useState } from 'react';
 export default function MainScreen() {
   const [currentScreen, setCurrentScreen] = useState('splash');
   const [hasSeenOnboarding, setHasSeenOnboarding] = useState(false);
+  const [showBudgetSetup, setShowBudgetSetup] = useState(false);
 
   useEffect(() => {
     const checkOnboarding = async () => {
       try {
         const seen = await AsyncStorage.getItem('hasSeenOnboarding');
         const loggedIn = await AsyncStorage.getItem('isLoggedIn');
+        const setupCompleted = await AsyncStorage.getItem('hasCompletedSetup');
         
         if (loggedIn === 'true') {
+          if (setupCompleted !== 'true') {
+              // User logged in but hasn't finished setup
+              setShowBudgetSetup(true);
+              return; 
+          }
           router.replace('/(tabs)/home');
           return;
         }
@@ -55,7 +63,7 @@ export default function MainScreen() {
     try {
       await AsyncStorage.setItem('hasSeenOnboarding', 'true');
       setHasSeenOnboarding(true);
-      setCurrentScreen('welcome');
+      setCurrentScreen('login'); // User requested to go directly to Login/Signup after Onboarding
     } catch (e) {
       console.error('Error saving onboarding status:', e);
     }
@@ -64,10 +72,21 @@ export default function MainScreen() {
   const handleLogin = async () => {
     try {
       await AsyncStorage.setItem('isLoggedIn', 'true');
-      router.replace('/(tabs)/home');
+      
+      const setupCompleted = await AsyncStorage.getItem('hasCompletedSetup');
+      if (setupCompleted !== 'true') {
+          setShowBudgetSetup(true);
+      } else {
+          router.replace('/(tabs)/home');
+      }
     } catch (e) {
       console.error('Error saving login status:', e);
     }
+  };
+
+  const handleSetupComplete = () => {
+      setShowBudgetSetup(false);
+      router.replace('/(tabs)/home');
   };
 
   const handleNavigateToSignup = () => {
@@ -86,6 +105,11 @@ export default function MainScreen() {
     return <SplashScreen />;
   }
 
+  // If budget setup is needed, show it immediately (overlay or replacement)
+  if (showBudgetSetup) {
+       return <BudgetSetupScreen visible={true} onComplete={handleSetupComplete} />;
+  }
+
   if (currentScreen === 'onboarding') {
     return <OnboardingScreen onComplete={handleOnboardingComplete} />;
   }
@@ -95,11 +119,21 @@ export default function MainScreen() {
   }
 
   if (currentScreen === 'signup') {
-    return <SignupScreen onNavigateToLogin={handleNavigateToLogin} />;
+    return <SignupScreen onNavigateToLogin={handleNavigateToLogin} onLogin={handleLogin} />;
   }
 
   if (currentScreen === 'login') {
-    return <LoginScreen onNavigateToSignup={handleNavigateToSignup} onLogin={handleLogin} />;
+    return (
+        <>
+            <LoginScreen onNavigateToSignup={handleNavigateToSignup} onLogin={handleLogin} />
+            <BudgetSetupScreen visible={showBudgetSetup} onComplete={handleSetupComplete} />
+        </>
+    );
+  }
+
+  // Also catch other screens if they turn on setup mode (e.g. valid session check)
+  if (showBudgetSetup) {
+       return <BudgetSetupScreen visible={true} onComplete={handleSetupComplete} />;
   }
 
   return null;

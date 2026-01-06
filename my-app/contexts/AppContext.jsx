@@ -1,4 +1,13 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useQueryClient } from '@tanstack/react-query';
+import { 
+  useTransactions, 
+  useBudgetSummary, 
+  useAllocations, 
+  useAddTransaction, 
+  useAllocateFunds 
+} from '@/hooks/useZeroBaseData';
 
 const AppContext = createContext();
 
@@ -11,82 +20,200 @@ export const useAppContext = () => {
 };
 
 export const AppProvider = ({ children }) => {
-  // Balance states
-  const [todayLimit, setTodayLimit] = useState(400000);
-  const [todaySpent, setTodaySpent] = useState(240000);
-  const [unallocatedBalance, setUnallocatedBalance] = useState(1240000);
+  const queryClient = useQueryClient();
 
+  // User Info
+  const [user, setUser] = useState({ name: 'ZeroBase User', email: '' });
+  
   // Categories
-  const [categoryOptions, setCategoryOptions] = useState([
-    { name: 'Food', icon: '🍔', color: '#F4A460', budget: 600000 },
-    { name: 'Transportation', icon: '🚗', color: '#4A90E2', budget: 400000 },
-    { name: 'Entertainment', icon: '🎮', color: '#FF6B6B', budget: 300000 },
-    { name: 'Shopping', icon: '🛍️', color: '#FFD93D', budget: 500000 },
-    { name: 'Healthcare', icon: '💊', color: '#50C878', budget: 200000 },
-    { name: 'Education', icon: '📚', color: '#9B59B6', budget: 300000 },
+  const [expenseCategories, setExpenseCategories] = useState([
+    { id: 'food', name: 'Food', icon: '🍔', color: '#F4A460' },
+    { id: 'transport', name: 'Transportation', icon: '🚗', color: '#4A90E2' },
+    { id: 'entertainment', name: 'Entertainment', icon: '🎮', color: '#FF6B6B' },
+    { id: 'shopping', name: 'Shopping', icon: '🛍️', color: '#FFD93D' },
+    { id: 'healthcare', name: 'Healthcare', icon: '💊', color: '#50C878' },
+    { id: 'education', name: 'Education', icon: '📚', color: '#9B59B6' },
   ]);
 
-  // Transactions
-  const [transactions, setTransactions] = useState([
-    { id: '1', type: 'expense', category: 'Food', amount: 50000, note: 'Lunch', date: new Date().toISOString() },
-    { id: '2', type: 'income', category: 'Salary', amount: 1000000, note: 'Monthly salary', date: new Date().toISOString() },
-    { id: '3', type: 'expense', category: 'Transportation', amount: 30000, note: 'Taxi', date: new Date().toISOString() },
+  const [incomeCategories, setIncomeCategories] = useState([
+    { id: 'allowance', name: 'Family Allowance', icon: '👪', color: '#81C784' },
+    { id: 'parttime', name: 'Part-time Job', icon: '💼', color: '#64B5F6' },
+    { id: 'scholarship', name: 'Scholarship', icon: '🎓', color: '#BA68C8' },
   ]);
 
-  // Add new category
+  // Load User on Mount
+  useEffect(() => {
+    const loadUser = async () => {
+        try {
+            const userInfoStr = await AsyncStorage.getItem('userInfo');
+            if (userInfoStr) {
+                const parsedUser = JSON.parse(userInfoStr);
+                setUser(parsedUser);
+            }
+        } catch (e) {
+            console.error("Failed to load user", e);
+        }
+    };
+    loadUser();
+  }, []);
+
+  const userId = user?.id === 'guest' ? null : user?.id;
+
+  // TanStack Query Hooks
+  const { 
+      data: transactions = [], 
+      isLoading: isLoadingTx, 
+      refetch: refetchTx 
+  } = useTransactions(userId);
+
+  const { 
+      data: budgetSummary, 
+      isLoading: isLoadingBudget,
+      refetch: refetchBudget,
+      remove: removeBudget
+  } = useBudgetSummary(userId);
+
+  const { 
+      data: allocations = [], 
+      isLoading: isLoadingAllocNotifications,
+      refetch: refetchAllocations
+  } = useAllocations(userId);
+
+  const addTransactionMutation = useAddTransaction();
+  const allocateFundsMutation = useAllocateFunds();
+
+  // Auth Actions
+  const login = async (userData) => {
+      // Clear previous user data from cache
+      queryClient.removeQueries(); 
+      queryClient.clear();
+
+      // Persist new user
+      await AsyncStorage.setItem('isLoggedIn', 'true');
+      await AsyncStorage.setItem('userInfo', JSON.stringify(userData));
+      
+      setUser(userData);
+      
+      // Data will be refetched automatically because `userId` (derived from user) changes.
+  };
+
+  const logout = async () => {
+      await AsyncStorage.removeItem('isLoggedIn');
+      await AsyncStorage.removeItem('userInfo');
+      setUser(null);
+      
+      queryClient.removeQueries();
+      queryClient.clear();
+  };
+
+  // Derived State
+  const safeToSpend = useMemo(() => {
+      if (user?.id === 'guest') return 5000000; 
+      return budgetSummary?.safeToSpend || 0;
+  }, [budgetSummary, user?.id]);
+
+  const unallocatedBalance = useMemo(() => {
+     if (user?.id === 'guest') return 2000000;
+     return budgetSummary?.unallocated || 0;
+  }, [budgetSummary, user?.id]);
+
+  const isLoading = isLoadingTx || isLoadingBudget;
+
+  const categoryOptions = useMemo(() => {
+      if (user?.id === 'guest') return expenseCategories.map(c => ({...c, budget: 0, spent: 0}));
+
+      return expenseCategories.map(cat => {
+          // Calculate Allocated Budget
+          const totalAllocated = allocations
+              .filter(a => a.categoryId === cat.id)
+              .reduce((sum, a) => sum + (Number(a.amount) || 0), 0);
+          
+          // Calculate Spent Amount
+          const totalSpent = transactions
+              .filter(t => t.type === 'expense' && t.category === cat.name) 
+              .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
+
+          return { ...cat, budget: totalAllocated, spent: totalSpent };
+      });
+  }, [expenseCategories, allocations, transactions, user?.id]);
+
+  const incomeOptions = useMemo(() => incomeCategories, [incomeCategories]);
+
+  // Actions
+  const refreshData = () => {
+      refetchTx();
+      refetchBudget();
+      refetchAllocations();
+  };
+
+  const addTransaction = async (transaction) => {
+      if (!user?.id) return;
+      if (user.id === 'guest') {
+          alert("Guest mode: Transaction not saved to backend.");
+          return;
+      }
+
+      try {
+          await addTransactionMutation.mutateAsync({
+              userId: user.id,
+              ...transaction
+          });
+      } catch (e) {
+          console.error("Add transaction failed", e);
+      }
+  };
+
+  const allocateFunds = async (amount, categoryId) => {
+      if (!user?.id || user.id === 'guest') return;
+      
+      try {
+          await allocateFundsMutation.mutateAsync({
+              userId: user.id,
+              amount,
+              categoryId,
+              categoryName: expenseCategories.find(c => c.id === categoryId)?.name
+          });
+      } catch (e) {
+          console.error("Allocation failed", e);
+      }
+  };
+
   const addCategory = (category) => {
-    setCategoryOptions([...categoryOptions, category]);
+      if (category.type === 'income') {
+          setIncomeCategories([...incomeCategories, { ...category, id: Date.now().toString() }]);
+      } else {
+          setExpenseCategories([...expenseCategories, { ...category, id: Date.now().toString() }]);
+      }
   };
 
-  // Add transaction
-  const addTransaction = (transaction) => {
-    setTransactions([transaction, ...transactions]);
-  };
-
-  // Update balance
-  const updateTodaySpent = (amount) => {
-    setTodaySpent(todaySpent + amount);
-  };
-
-  const updateUnallocatedBalance = (amount) => {
-    setUnallocatedBalance(unallocatedBalance + amount);
-  };
-
-  // Calculate totals
   const getTotalIncome = () => {
     return transactions
-      .filter(t => t.type === 'income')
-      .reduce((sum, t) => sum + t.amount, 0);
+            .filter(t => t.type === 'income')
+            .reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0);
   };
 
   const getTotalExpense = () => {
     return transactions
-      .filter(t => t.type === 'expense')
-      .reduce((sum, t) => sum + t.amount, 0);
+            .filter(t => t.type === 'expense')
+            .reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0);
   };
 
   const value = {
-    // States
-    todayLimit,
-    todaySpent,
+    safeToSpend,
     unallocatedBalance,
-    categoryOptions,
+    categoryOptions, 
+    incomeOptions,
     transactions,
-    
-    // Setters
-    setTodayLimit,
-    setTodaySpent,
-    setUnallocatedBalance,
-    
-    // Actions
+    isLoading,
+    user,
+    login, // Exposed
+    logout, // Exposed
     addCategory,
     addTransaction,
-    updateTodaySpent,
-    updateUnallocatedBalance,
-    
-    // Getters
+    allocateFunds,
+    refreshData,
     getTotalIncome,
-    getTotalExpense,
+    getTotalExpense
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
