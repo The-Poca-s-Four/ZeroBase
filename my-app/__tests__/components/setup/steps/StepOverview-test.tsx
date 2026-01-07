@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import StepOverview from '../../components/setup/steps/StepOverview';
+import StepOverview from '@/components/setup/steps/StepOverview';
 
 describe('StepOverview', () => {
     const mockOnNext = jest.fn();
