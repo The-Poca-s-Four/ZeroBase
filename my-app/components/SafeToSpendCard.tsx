@@ -31,7 +31,7 @@ export default function SafeToSpendCard({
     >
       <View style={styles.header}>
         <Text style={styles.label}>Safe to Spend</Text>
-        <TouchableOpacity style={styles.infoButton} onPress={() => router.push('/guide')}>
+        <TouchableOpacity style={styles.iconButton} onPress={() => router.push('/guide')} testID="info-button">
            <Ionicons name="information-circle-outline" size={22} color="rgba(255,255,255,0.7)" />
         </TouchableOpacity>
       </View>
@@ -49,7 +49,7 @@ export default function SafeToSpendCard({
         </View>
         
         {onAddTransaction && (
-          <TouchableOpacity style={styles.addButton} onPress={onAddTransaction}>
+          <TouchableOpacity style={styles.addButton} onPress={onAddTransaction} testID="add-button">
             <Ionicons name="add" size={24} color="#2a5298" />
           </TouchableOpacity>
         )}
