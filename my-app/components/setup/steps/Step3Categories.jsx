@@ -9,7 +9,9 @@ export default function Step3Categories({ title, subTitle, type, initialCategori
 
   // Helper functions
   const formatNumber = (numString) => {
-    return numString.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    const cleaned = numString.replace(/\D/g, '');
+    if (!cleaned) return '';
+    return new Intl.NumberFormat('vi-VN').format(Number.parseInt(cleaned, 10));
   };
   
   const parseNumber = (numString) => {

@@ -1,5 +1,5 @@
 import { useAppContext } from '@/contexts/AppContext';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
     Alert,
@@ -10,7 +10,6 @@ import {
     TouchableOpacity,
     View,
     TextInput,
-    Pressable,
     RefreshControl
 } from 'react-native';
 import BudgetInfoCard from '../Reuse/BudgetInfoCard';
@@ -23,13 +22,10 @@ export default function HomeScreen() {
     unallocatedBalance,
     categoryOptions,
     incomeOptions,
-    addCategory,
     addTransaction,
     allocateFunds, 
     user,
     refreshData,
-    getTotalIncome,
-    getTotalExpense
   } = useAppContext();
   
   const [refreshing, setRefreshing] = React.useState(false);
@@ -121,11 +117,14 @@ export default function HomeScreen() {
           return;
       }
       const type = activeTab === 'expense' ? 'expense' : 'income';
+      // Use standard Number.parseInt
+      const amt = Number.parseInt(amount.replace(/\./g, ''), 10);
+      
       const cat = currentCategoryList.find(c => c.id === selectedCategoryId);
       
       await addTransaction({
           id: Date.now().toString(),
-          amount: parseInt(amount.replace(/\./g, '')),
+          amount: amt, 
           type,
           category: cat ? cat.name : 'General',
           note,
@@ -138,26 +137,12 @@ export default function HomeScreen() {
       Alert.alert("Success", `${type === 'income' ? 'Income' : 'Outcome'} added!`);
   };
 
-  const handleAllocation = async () => {
-       // Demo allocation logic: Allocate entered amount to ALL categories evenly or just selected?
-       // The UI in image shows a list. For MVP refactor, let's keep it simple: Allocate to selected.
-       if (!amount) return;
-       const amt = parseInt(amount.replace(/\./g, ''));
-       if (amt > unallocatedBalance) {
-           Alert.alert("Error", "Not enough unallocated balance");
-           return;
-       }
-       await allocateFunds(amt, selectedCategoryId);
-       setAmount('');
-       Alert.alert("Success", "Funds allocated!");
-  };
-
   const formatNumber = (numString) => {
     if (!numString) return '';
-    return numString.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    const cleaned = numString.toString().replace(/\D/g, '');
+    if (!cleaned) return '';
+    return new Intl.NumberFormat('vi-VN').format(Number.parseInt(cleaned, 10));
   };
-
-  const currentCategory = currentCategoryList.find(c => c.id === selectedCategoryId) || currentCategoryList[0];
 
   return (
     <View style={styles.container}>

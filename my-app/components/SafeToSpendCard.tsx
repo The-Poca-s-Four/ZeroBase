@@ -19,7 +19,7 @@ export default function SafeToSpendCard({
 }: SafeToSpendCardProps) {
   
   const formatAmount = (amount: number) => {
-    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return new Intl.NumberFormat('vi-VN').format(amount);
   };
 
   return (

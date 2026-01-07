@@ -48,14 +48,14 @@ export default function OnboardingScreen({ onComplete }) {
 
   const goToNextSlide = () => {
     if (!pageWidth) return;
+    
     if (currentSlide < onboardingData.length - 1) {
-      scrollViewRef.current &&
-        scrollViewRef.current.scrollTo({
+      scrollViewRef.current?.scrollTo({
           x: (currentSlide + 1) * pageWidth,
           animated: true,
-        });
+      });
     } else {
-      if (typeof onComplete === "function") onComplete();
+      onComplete(); // Already validated by PropTypes to be func
     }
   };
 
@@ -78,9 +78,9 @@ export default function OnboardingScreen({ onComplete }) {
 
         <View style={styles.content}>
           <View style={styles.pagination}>
-            {onboardingData.map((_, index) => (
+            {onboardingData.map((item, index) => (
               <View
-                key={String(index)}
+                key={item.id}
                 style={[
                   styles.paginationDot,
                   currentSlide === index && styles.paginationDotActive,
@@ -123,6 +123,10 @@ export default function OnboardingScreen({ onComplete }) {
     </SafeAreaView>
   );
 }
+
+OnboardingScreen.propTypes = {
+  onComplete: PropTypes.func.isRequired,
+};
 
 const styles = StyleSheet.create({
   safe: {
