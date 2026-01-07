@@ -1,7 +1,6 @@
 # ZeroBase Mobile App
 
 [![React Native CI - Test, Report & SonarCloud](https://github.com/The-Poca-s-Four/ZeroBase/actions/workflows/ci.yml/badge.svg)](https://github.com/The-Poca-s-Four/ZeroBase/actions/workflows/ci.yml)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=The-Poca-s-Four_ZeroBase&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=The-Poca-s-Four_ZeroBase)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=The-Poca-s-Four_ZeroBase&metric=coverage)](https://sonarcloud.io/summary/new_code?id=The-Poca-s-Four_ZeroBase)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=The-Poca-s-Four_ZeroBase&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=The-Poca-s-Four_ZeroBase)
 
