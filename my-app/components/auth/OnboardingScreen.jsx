@@ -6,9 +6,9 @@ import {
   ScrollView,
   StatusBar,
   Platform,
-  SafeAreaView,
   Dimensions,
 } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { MenuIcon, AppButton } from "../Reuse";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
@@ -60,7 +60,7 @@ export default function OnboardingScreen({ onComplete }) {
   };
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
       {Platform.OS === "android" ? (
         <View style={{ height: StatusBar.currentHeight || 0 }} />
       ) : null}

@@ -4,13 +4,16 @@
     "slug": "zerobase",
     "version": "1.0.0",
     "orientation": "portrait",
-    "orientation": "portrait",
     "icon": "./assets/images/Logo.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.tanlocdev04.zerobase",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {

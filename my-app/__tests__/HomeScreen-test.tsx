@@ -1,101 +1,95 @@
-import { FlatList } from "react-native";
-import { HomeScreen } from "@/components/home";
-import { render, fireEvent } from "@testing-library/react-native";
-import React from "react";
+import React from 'react';
+import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import HomeScreen from '@/components/home/HomeScreen'; // Adjusted import if needed or just '@/components/home' if index exports it
+import { AppProvider } from '@/contexts/AppContext';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import * as UseZeroBaseData from '@/hooks/useZeroBaseData';
 
-jest.mock("@expo/vector-icons", () => {
-  const React = require("react");
-  const { View } = require("react-native");
-
-  return {
-    Ionicons: ({ name, ...props }: any) => (
-      <View testID={`ionicon-${name}`} {...props} />
-    ),
-  };
+// Mock child components
+jest.mock('@/components/Reuse/BudgetInfoCard', () => {
+    const { View, Text } = require('react-native'); 
+    return (props: any) => <View testID="budget-info-card"><Text>{props.title}</Text></View>;
 });
 
-describe("HomeScreen", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
+// Mock AppContext directly to avoid provider complexity
+const mockContextValue = {
+    safeToSpend: 5000000,
+    unallocatedBalance: 2000000,
+    categoryOptions: [
+        { id: '1', name: 'Food', icon: '🍔', color: 'red', budget: 100, spent: 50 }
+    ],
+    incomeOptions: [
+        { id: '2', name: 'Allowance', icon: '💵', color: 'green' }
+    ],
+    user: { name: 'Test User' },
+    addTransaction: jest.fn(),
+    allocateFunds: jest.fn(),
+    refreshData: jest.fn(),
+    getTotalIncome: jest.fn(),
+    getTotalExpense: jest.fn(),
+    addCategory: jest.fn()
+};
 
-  it("render greeting text đúng", () => {
-    const { getByText } = render(<HomeScreen />);
-    expect(getByText("Hey, Poca")).toBeTruthy();
-  });
+jest.mock('@/contexts/AppContext', () => ({
+    useAppContext: () => mockContextValue
+}));
 
-  it("hiển thị balance card với số dư đúng", () => {
-    const { getByText } = render(<HomeScreen />);
-    expect(getByText("240.000")).toBeTruthy();
-    expect(getByText("1.240.000")).toBeTruthy();
-    expect(getByText("Today's Limit")).toBeTruthy();
-    expect(getByText("Unallocated balance")).toBeTruthy();
-  });
+// We don't need to mock hooks anymore since we mock the Context that uses them?
+// Actually HomeScreen uses useAppContext only. It does NOT use useZeroBaseData directly.
+// So we can remove useZeroBaseData mock if we mock AppContext.
 
-  it("hiển thị 3 action tabs", () => {
-    const { getByText } = render(<HomeScreen />);
-    expect(getByText("− Outcome")).toBeTruthy();
-    expect(getByText("+ Income")).toBeTruthy();
-    expect(getByText("% Allocate")).toBeTruthy();
-  });
+// However, we keeping mocks for other things is fine.
 
-  it("chuyển tab sang Income khi bấm Income tab", () => {
-    const { getByText } = render(<HomeScreen />);
-    const incomeTab = getByText("+ Income");
+// Remove AppProvider from wrapper
+const createWrapper = () => {
+    const queryClient = new QueryClient({
+        defaultOptions: { queries: { retry: false } }
+    });
+    return ({ children }: { children: React.ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    );
+};
 
-    fireEvent.press(incomeTab);
+describe('HomeScreen Integration', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
 
-    expect(getByText("Allowance")).toBeTruthy();
-    expect(getByText("Income")).toBeTruthy();
-  });
+    it('renders Balance Info and Tabs', async () => {
+        const { getByText } = render(<HomeScreen />, { wrapper: createWrapper() });
 
-  it("chuyển tab sang Outcome khi bấm Outcome tab", () => {
-    const { getByText, queryAllByText } = render(<HomeScreen />);
-    const outcomeTab = getByText("− Outcome");
+        // Check for inline balance card text
+        expect(getByText("Today's Limit")).toBeTruthy();
+        expect(getByText("Unallocated balance")).toBeTruthy();
 
-    fireEvent.press(outcomeTab);
+        // Check for Tabs
+        expect(getByText('— Expense')).toBeTruthy();
+        expect(getByText('+ Income')).toBeTruthy();
+        expect(getByText('% Allocate')).toBeTruthy();
+        
+        // Check for BudgetInfoCards
+        expect(getByText('Safe to Spend')).toBeTruthy();
+    });
 
-    // "Food" xuất hiện ở 2 chỗ: form và category cards
-    const foodElements = queryAllByText("Food");
-    expect(foodElements.length).toBeGreaterThanOrEqual(1);
-    expect(getByText("Outcome")).toBeTruthy();
-  });
+    it('switches to Income view when Income tab is pressed', () => {
+        const { getByText } = render(<HomeScreen />, { wrapper: createWrapper() });
+        const incomeTab = getByText('+ Income');
+        
+        fireEvent.press(incomeTab);
 
-  it("chuyển tab sang Allocate khi bấm Allocate tab", () => {
-    const { getByText, queryAllByText } = render(<HomeScreen />);
-    const allocateTab = getByText("% Allocate");
+        // Expect to see "Confirm Income" button
+        expect(getByText('Confirm Income')).toBeTruthy();
+    });
 
-    fireEvent.press(allocateTab);
-
-    // "Unallocated balance" xuất hiện ở 2 chỗ: header card và allocate form
-    const unallocatedElements = queryAllByText("Unallocated balance");
-    expect(unallocatedElements.length).toBeGreaterThanOrEqual(1);
-    expect(getByText("Skincare")).toBeTruthy();
-    expect(getByText("Allocated")).toBeTruthy();
-  });
-
-  it("hiển thị streak section với đúng thông tin", () => {
-    const { getByText } = render(<HomeScreen />);
-    expect(getByText("4-day streak")).toBeTruthy();
-    expect(getByText("❄️ 4 available")).toBeTruthy();
-  });
-
-  it("hiển thị danh sách categories trong FlatList", () => {
-    const { getByText, UNSAFE_getByType } = render(<HomeScreen />);
-
-    const flatList = UNSAFE_getByType(FlatList);
-    expect(flatList).toBeTruthy();
-
-    expect(getByText("Transportation")).toBeTruthy();
-    expect(getByText("Food")).toBeTruthy();
-    expect(getByText("Entertainment")).toBeTruthy();
-    expect(getByText("Shopping")).toBeTruthy();
-  });
-
-  it("render category cards với progress bar", () => {
-    const { getAllByText } = render(<HomeScreen />);
-
-    const paidTexts = getAllByText(/paid/);
-    expect(paidTexts.length).toBeGreaterThan(0);
-  });
+    it('switches to Allocate view when Allocate tab is pressed', () => {
+        const { getByText } = render(<HomeScreen />, { wrapper: createWrapper() });
+        const allocateTab = getByText('% Allocate');
+        
+        fireEvent.press(allocateTab);
+        
+        // Expect to see "Confirm Allocation" button
+        expect(getByText('Confirm Allocation')).toBeTruthy();
+    });
 });

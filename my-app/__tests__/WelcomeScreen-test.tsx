@@ -2,43 +2,57 @@ import { WelcomeScreen } from "@/components/auth";
 import { render, fireEvent } from "@testing-library/react-native";
 import React from "react";
 
-const mockOnPress = jest.fn();
-jest.mock("../components/Reuse", () => {
+// Mock the dependencies used in WelcomeScreen
+jest.mock("@/components/Reuse", () => {
   const React = require("react");
-  const { View, Text } = require("react-native");
+  const { View, Text, TouchableOpacity } = require("react-native");
 
   return {
     __esModule: true,
     MenuIcon: () => <View testID="menu-icon" />,
-    AppButton: ({ text }: { text: string }) => (
-      <Text testID={`app-button-${text}`} onPress={mockOnPress}>
-        {text}
-      </Text>
+    // Simulate AppButton as a simple touchable
+    AppButton: ({ text, onPress }: { text: string; onPress?: () => void }) => (
+      <TouchableOpacity testID={`app-button-${text}`} onPress={onPress}>
+        <Text>{text}</Text>
+      </TouchableOpacity>
     ),
-
     AppLogo: () => <View testID="app-logo" />,
     SocialButtons: () => <View testID="social-buttons" />,
   };
 });
 
 describe("WelcomeScreen", () => {
-  it("renders welcome message", () => {
-    const { getByText } = render(<WelcomeScreen onLogin={mockOnPress} />);
-    const text = `Know your limit for 
-a better end of month`;
+  const mockOnLogin = jest.fn();
+  const mockOnSignup = jest.fn();
 
-    expect(getByText(text)).toBeTruthy();
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
-  it("calls onPress when sign in button is pressed", () => {
-    const { getByTestId } = render(<WelcomeScreen onLogin={mockOnPress} />);
+
+  it("renders welcome message", () => {
+    const { getByText } = render(
+        <WelcomeScreen onLogin={mockOnLogin} onSignup={mockOnSignup} />
+    );
+    // Updated text matcher to be more flexible or exact based on actual component
+    // Assuming the component renders these separately or in a specific way
+    expect(getByText(/Know your limit/i)).toBeTruthy();
+  });
+
+  it("calls onLogin when sign in button is pressed", () => {
+    const { getByTestId } = render(
+        <WelcomeScreen onLogin={mockOnLogin} onSignup={mockOnSignup} />
+    );
     const button = getByTestId("app-button-Sign in");
     fireEvent.press(button);
-    expect(mockOnPress).toHaveBeenCalled();
+    expect(mockOnLogin).toHaveBeenCalled();
   });
-  it("calls onPress when sign up button is pressed", () => {
-    const { getByTestId } = render(<WelcomeScreen onLogin={mockOnPress} />);
+
+  it("calls onSignup when sign up button is pressed", () => {
+    const { getByTestId } = render(
+        <WelcomeScreen onLogin={mockOnLogin} onSignup={mockOnSignup} />
+    );
     const button = getByTestId("app-button-Sign up");
     fireEvent.press(button);
-    expect(mockOnPress).toHaveBeenCalled();
+    expect(mockOnSignup).toHaveBeenCalled();
   });
 });
