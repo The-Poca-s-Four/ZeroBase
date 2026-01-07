@@ -9,6 +9,7 @@ import {
   Dimensions,
 } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import PropTypes from 'prop-types';
 import { MenuIcon, AppButton } from "../Reuse";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
