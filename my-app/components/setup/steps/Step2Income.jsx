@@ -31,7 +31,7 @@ export default function Step2Income({ onNext, onBack, initialData }) {
   };
   
   const parseNumber = (numString) => {
-      return parseInt(numString.replace(/\./g, '') || '0', 10);
+      return Number.parseInt((numString || '0').toString().replaceAll('.', ''), 10);
   }
 
   const getTotalIncome = () => {

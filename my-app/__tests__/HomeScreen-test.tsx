@@ -92,4 +92,23 @@ describe('HomeScreen Integration', () => {
         // Expect to see "Confirm Allocation" button
         expect(getByText('Confirm Allocation')).toBeTruthy();
     });
+
+    it('adds a transaction when form is submitted', async () => {
+        const { getByText, getByPlaceholderText } = render(<HomeScreen />, { wrapper: createWrapper() });
+        
+        // Enter amount
+        const amountInput = getByPlaceholderText('0');
+        fireEvent.changeText(amountInput, '50000');
+        
+        // Submit (Expense default)
+        const submitBtn = getByText('Confirm Expense');
+        fireEvent.press(submitBtn);
+        
+        await waitFor(() => {
+             expect(mockContextValue.addTransaction).toHaveBeenCalledWith(expect.objectContaining({
+                amount: 50000,
+                type: 'expense'
+            }));
+        });
+    });
 });

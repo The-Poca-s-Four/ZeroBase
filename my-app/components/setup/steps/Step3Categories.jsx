@@ -15,7 +15,7 @@ export default function Step3Categories({ title, subTitle, type, initialCategori
   };
   
   const parseNumber = (numString) => {
-      return parseInt(numString.replace(/\./g, '') || '0', 10);
+      return Number.parseInt((numString || '0').toString().replaceAll('.', ''), 10);
   }
 
   const updateAmount = (index, text) => {

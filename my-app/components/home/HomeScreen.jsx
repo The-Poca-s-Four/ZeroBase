@@ -118,7 +118,7 @@ export default function HomeScreen() {
       }
       const type = activeTab === 'expense' ? 'expense' : 'income';
       // Use standard Number.parseInt
-      const amt = Number.parseInt(amount.replaceAll(/\./g, ''), 10);
+      const amt = Number.parseInt(amount.replaceAll('.', ''), 10);
       
       const cat = currentCategoryList.find(c => c.id === selectedCategoryId);
       
