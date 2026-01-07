@@ -18,7 +18,7 @@ export default function QuickAddModal({ visible, onClose, onAdd }: QuickAddModal
 
   // Format: 5000000 -> 5.000.000
   const formatNumber = (numString: string) => {
-    const cleaned = numString.replace(/\D/g, '');
+    const cleaned = numString.replaceAll(/\D/g, '');
     if (!cleaned) return '';
     return new Intl.NumberFormat('vi-VN').format(parseInt(cleaned, 10));
   };

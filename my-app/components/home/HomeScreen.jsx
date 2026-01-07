@@ -42,7 +42,7 @@ export default function HomeScreen() {
   const [selectedCategoryId, setSelectedCategoryId] = useState(currentCategoryList[0]?.id);
   
   // Allocate Tab State
-  const [allocationPercents, setAllocationPercents] = useState({}); // { catId: number }
+  const [allocationPercents, setAllocationPercents] = useState({}); 
 
   const handlePercentChange = (catId, delta) => {
       setAllocationPercents(prev => {
@@ -118,7 +118,7 @@ export default function HomeScreen() {
       }
       const type = activeTab === 'expense' ? 'expense' : 'income';
       // Use standard Number.parseInt
-      const amt = Number.parseInt(amount.replace(/\./g, ''), 10);
+      const amt = Number.parseInt(amount.replaceAll(/\./g, ''), 10);
       
       const cat = currentCategoryList.find(c => c.id === selectedCategoryId);
       
@@ -139,7 +139,7 @@ export default function HomeScreen() {
 
   const formatNumber = (numString) => {
     if (!numString) return '';
-    const cleaned = numString.toString().replace(/\D/g, '');
+    const cleaned = numString.toString().replaceAll(/\D/g, '');
     if (!cleaned) return '';
     return new Intl.NumberFormat('vi-VN').format(Number.parseInt(cleaned, 10));
   };
